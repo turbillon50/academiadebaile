@@ -21,6 +21,8 @@ import {
 } from "@/lib/validations";
 import type { ActionResult } from "@/lib/actions/bookings";
 
+const DEMO_NO_DB = process.env.DEMO_MODE === "1" && !process.env.DATABASE_URL;
+
 async function ensureAdmin(): Promise<ActionResult | null> {
   if (!(await hasRole("admin"))) {
     return { ok: false, message: "Necesitas permisos de administrador." };
@@ -43,6 +45,7 @@ export async function upsertStyle(
 ): Promise<ActionResult> {
   const guard = await ensureAdmin();
   if (guard) return guard;
+  if (DEMO_NO_DB) return { ok: true, message: "Estilo guardado (demo)." };
 
   const raw = formToObject(formData);
   const parsed = styleInputSchema.safeParse({
@@ -76,6 +79,7 @@ export async function upsertStyle(
 export async function deleteStyle(id: string): Promise<ActionResult> {
   const guard = await ensureAdmin();
   if (guard) return guard;
+  if (DEMO_NO_DB) return { ok: true, message: "Estilo eliminado (demo)." };
   await db.delete(styles).where(eq(styles.id, id));
   revalidatePath("/admin/estilos");
   return { ok: true, message: "Estilo eliminado." };
@@ -87,6 +91,7 @@ export async function upsertInstructor(
 ): Promise<ActionResult> {
   const guard = await ensureAdmin();
   if (guard) return guard;
+  if (DEMO_NO_DB) return { ok: true, message: "Instructor guardado (demo)." };
 
   const raw = formToObject(formData);
   const styleIds = formData.getAll("styleIds").map(String);
@@ -138,6 +143,7 @@ export async function upsertInstructor(
 export async function deleteInstructor(id: string): Promise<ActionResult> {
   const guard = await ensureAdmin();
   if (guard) return guard;
+  if (DEMO_NO_DB) return { ok: true, message: "Instructor eliminado (demo)." };
   await db.delete(instructors).where(eq(instructors.id, id));
   revalidatePath("/admin/instructores");
   return { ok: true, message: "Instructor eliminado." };
@@ -147,6 +153,7 @@ export async function deleteInstructor(id: string): Promise<ActionResult> {
 export async function upsertClass(formData: FormData): Promise<ActionResult> {
   const guard = await ensureAdmin();
   if (guard) return guard;
+  if (DEMO_NO_DB) return { ok: true, message: "Clase guardada (demo)." };
 
   const raw = formToObject(formData);
   const parsed = classInputSchema.safeParse({
@@ -184,6 +191,7 @@ export async function upsertClass(formData: FormData): Promise<ActionResult> {
 export async function deleteClass(id: string): Promise<ActionResult> {
   const guard = await ensureAdmin();
   if (guard) return guard;
+  if (DEMO_NO_DB) return { ok: true, message: "Clase eliminada (demo)." };
   await db.delete(classes).where(eq(classes.id, id));
   revalidatePath("/admin/clases");
   return { ok: true, message: "Clase eliminada." };
@@ -193,6 +201,7 @@ export async function deleteClass(id: string): Promise<ActionResult> {
 export async function upsertEvent(formData: FormData): Promise<ActionResult> {
   const guard = await ensureAdmin();
   if (guard) return guard;
+  if (DEMO_NO_DB) return { ok: true, message: "Evento guardado (demo)." };
 
   const raw = formToObject(formData);
   const parsed = eventInputSchema.safeParse(raw);
@@ -227,6 +236,7 @@ export async function upsertEvent(formData: FormData): Promise<ActionResult> {
 export async function deleteEvent(id: string): Promise<ActionResult> {
   const guard = await ensureAdmin();
   if (guard) return guard;
+  if (DEMO_NO_DB) return { ok: true, message: "Evento eliminado (demo)." };
   await db.delete(events).where(eq(events.id, id));
   revalidatePath("/admin/eventos");
   return { ok: true, message: "Evento eliminado." };

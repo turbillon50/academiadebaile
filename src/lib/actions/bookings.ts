@@ -8,6 +8,8 @@ import { bookings, classSessions } from "@/db/schema";
 import { requireUser } from "@/lib/auth";
 import { bookingInputSchema } from "@/lib/validations";
 
+const DEMO_NO_DB = process.env.DEMO_MODE === "1" && !process.env.DATABASE_URL;
+
 export interface ActionResult {
   ok: boolean;
   message: string;
@@ -21,6 +23,10 @@ export async function reserveSession(sessionId: string): Promise<ActionResult> {
   const parsed = bookingInputSchema.safeParse({ sessionId });
   if (!parsed.success) {
     return { ok: false, message: "Sesión inválida." };
+  }
+
+  if (DEMO_NO_DB) {
+    return { ok: true, message: "¡Reserva confirmada! Te esperamos en la pista." };
   }
 
   const user = await requireUser();
@@ -84,6 +90,10 @@ export async function reserveSession(sessionId: string): Promise<ActionResult> {
 
 /** Cancela una reserva del alumno autenticado. */
 export async function cancelBooking(bookingId: string): Promise<ActionResult> {
+  if (DEMO_NO_DB) {
+    return { ok: true, message: "Reserva cancelada." };
+  }
+
   const user = await requireUser();
 
   const booking = await db.query.bookings.findFirst({

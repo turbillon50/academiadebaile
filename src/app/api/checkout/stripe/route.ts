@@ -8,8 +8,14 @@ import { env } from "@/lib/env";
 import { getStripe } from "@/lib/stripe";
 import { checkoutInputSchema } from "@/lib/validations";
 
+const DEMO_NO_DB = process.env.DEMO_MODE === "1" && !process.env.DATABASE_URL;
+
 /** Crea una sesión de Stripe Checkout para comprar un plan de membresía. */
 export async function POST(req: Request): Promise<Response> {
+  if (DEMO_NO_DB) {
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "";
+    return NextResponse.json({ url: `${appUrl}/app/membresia?pago=exito` });
+  }
   try {
     const user = await requireUser();
     const body: unknown = await req.json();

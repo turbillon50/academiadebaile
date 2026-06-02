@@ -29,6 +29,15 @@ function getDb(): DB {
   if (_db) return _db;
   const connectionString = process.env.DATABASE_URL;
   if (!connectionString) {
+    if (process.env.DEMO_MODE === "1") {
+      // Demo sin DB: devuelve proxy vacío; las queries nunca deben llegar aquí
+      // porque queries.ts / auth.ts devuelven mock data antes.
+      return new Proxy({} as DB, {
+        get() {
+          throw new Error("[Demo] No hay DATABASE_URL. Usa los datos mock.");
+        },
+      });
+    }
     throw new Error(
       "Falta DATABASE_URL. Configúrala en .env.local (Neon Postgres pooled).",
     );
