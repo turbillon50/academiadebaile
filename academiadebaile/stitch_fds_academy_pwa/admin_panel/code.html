@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FDS Academy - Admin Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Geist:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#00531a",
+                    "surface-container": "#1e2020",
+                    "surface-tint": "#aac7ff",
+                    "surface-variant": "#333535",
+                    "surface-container-highest": "#333535",
+                    "primary": "#aac7ff",
+                    "on-secondary-fixed-variant": "#332dbc",
+                    "tertiary": "#47e266",
+                    "on-secondary-container": "#b1b1ff",
+                    "on-primary-container": "#002957",
+                    "outline": "#8b91a0",
+                    "surface-container-high": "#282a2b",
+                    "secondary-fixed": "#e2dfff",
+                    "tertiary-fixed": "#6cff82",
+                    "surface-container-lowest": "#0c0f0f",
+                    "surface-container-low": "#1a1c1c",
+                    "on-secondary": "#1800a7",
+                    "secondary-fixed-dim": "#c2c1ff",
+                    "on-secondary-fixed": "#0c006b",
+                    "background": "#121414",
+                    "on-primary-fixed-variant": "#00468d",
+                    "on-primary": "#003064",
+                    "inverse-primary": "#005db8",
+                    "surface": "#121414",
+                    "on-primary-fixed": "#001b3e",
+                    "tertiary-fixed-dim": "#47e266",
+                    "inverse-surface": "#e2e2e2",
+                    "primary-fixed": "#d6e3ff",
+                    "on-tertiary-fixed": "#002106",
+                    "on-tertiary-container": "#00320d",
+                    "secondary": "#c2c1ff",
+                    "on-surface-variant": "#c0c6d6",
+                    "on-error": "#690005",
+                    "on-tertiary": "#003910",
+                    "error-container": "#93000a",
+                    "primary-container": "#3e90ff",
+                    "surface-dim": "#121414",
+                    "surface-bright": "#37393a",
+                    "on-surface": "#e2e2e2",
+                    "on-background": "#e2e2e2",
+                    "secondary-container": "#3630bf",
+                    "primary-fixed-dim": "#aac7ff",
+                    "outline-variant": "#414754",
+                    "tertiary-container": "#00a73e",
+                    "inverse-on-surface": "#2f3131",
+                    "error": "#ffb4ab",
+                    "on-error-container": "#ffdad6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "12px",
+                    "section-margin": "32px",
+                    "container-margin": "20px",
+                    "glass-padding": "20px",
+                    "stack-gap": "16px"
+            },
+            "fontFamily": {
+                    "headline-xl": ["Geist"],
+                    "headline-lg": ["Geist"],
+                    "label-bold": ["Geist"],
+                    "body-md": ["Inter"],
+                    "status-pill": ["Inter"],
+                    "headline-lg-mobile": ["Geist"]
+            },
+            "fontSize": {
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "status-pill": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #000000;
+            color: #e2e2e2;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.2s ease, background 0.3s ease;
+        }
+        .glass-card:active {
+            transform: scale(0.98);
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .status-pill-green {
+            background: rgba(71, 226, 102, 0.15);
+            color: #47e266;
+            border: 1px solid rgba(71, 226, 102, 0.3);
+        }
+        .status-pill-blue {
+            background: rgba(170, 199, 255, 0.15);
+            color: #aac7ff;
+            border: 1px solid rgba(170, 199, 255, 0.3);
+        }
+        .status-pill-amber {
+            background: rgba(255, 180, 171, 0.15);
+            color: #ffb4ab;
+            border: 1px solid rgba(255, 180, 171, 0.3);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-body-md">
+<!-- Top Navigation Anchor -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-container-margin h-16 backdrop-blur-xl bg-background/10 border-b border-white/10">
+<div class="flex items-center gap-3">
+<img alt="Logo" class="w-8 h-8 rounded-full border border-primary/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAMpOTx2b5iewou8Uid0XD1qyfGJUk8UgHlYbqn5tHBoFTJ-fUc1b-3vcU9qwakh7ijqpvXFyg7IQDOt0KXfFQkGNs_bvcomFiF-3wZsDKC9hxgVW-F23UhPYPqEQpyZSlTPSIQG_NZ2wp7PfiFW2QN5AfLfpvI41BL4zcxpfUNFbvqbVRI77Fwmay3v575v1662ej1fkATwwHp7I-d7aMVSyb8fa-h9CYi0PRRFojYIU3FflQ8n1dw-ju9y7NT7HuGd7wtQrQQGvn"/>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">FDS Academy</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary hover:opacity-80 transition-opacity">notifications</button>
+<div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary/40">
+<span class="material-symbols-outlined text-sm text-primary">person</span>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-container-margin max-w-7xl mx-auto">
+<!-- Welcome Section -->
+<section class="mb-8">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Panel Administrativo</h2>
+<p class="text-on-surface-variant opacity-70">Resumen operativo y métricas en tiempo real.</p>
+</section>
+<!-- Metrics Bento Grid -->
+<section class="grid grid-cols-2 md:grid-cols-4 gap-stack-gap mb-section-margin">
+<div class="glass-card rounded-xl p-glass-padding flex flex-col justify-between aspect-square md:aspect-auto">
+<div>
+<span class="material-symbols-outlined text-primary mb-2" style="font-variation-settings: 'FILL' 1;">group</span>
+<p class="text-label-bold font-label-bold text-on-surface-variant uppercase tracking-wider">Alumnos</p>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg">128</h3>
+<span class="text-status-pill font-status-pill status-pill-green px-2 py-0.5 rounded-full">Activos</span>
+</div>
+</div>
+<div class="glass-card rounded-xl p-glass-padding flex flex-col justify-between aspect-square md:aspect-auto">
+<div>
+<span class="material-symbols-outlined text-tertiary mb-2" style="font-variation-settings: 'FILL' 1;">payments</span>
+<p class="text-label-bold font-label-bold text-on-surface-variant uppercase tracking-wider">Ingresos</p>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg">$68,000</h3>
+<p class="text-status-pill font-status-pill text-on-surface-variant">MXN este mes</p>
+</div>
+</div>
+<div class="glass-card rounded-xl p-glass-padding flex flex-col justify-between aspect-square md:aspect-auto border-error/20">
+<div>
+<span class="material-symbols-outlined text-error mb-2" style="font-variation-settings: 'FILL' 1;">credit_card_off</span>
+<p class="text-label-bold font-label-bold text-on-surface-variant uppercase tracking-wider">Adeudos</p>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg">15</h3>
+<span class="text-status-pill font-status-pill status-pill-amber px-2 py-0.5 rounded-full">Pendientes</span>
+</div>
+</div>
+<div class="glass-card rounded-xl p-glass-padding flex flex-col justify-between aspect-square md:aspect-auto">
+<div>
+<span class="material-symbols-outlined text-secondary mb-2" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+<p class="text-label-bold font-label-bold text-on-surface-variant uppercase tracking-wider">Eventos</p>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg">3</h3>
+<span class="text-status-pill font-status-pill status-pill-blue px-2 py-0.5 rounded-full">Programados</span>
+</div>
+</div>
+</section>
+<!-- Quick Actions & Management Modules -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Management Modules (Main Grid) -->
+<div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-stack-gap">
+<h3 class="col-span-full font-label-bold text-label-bold text-on-surface mb-2">Gestión de Academia</h3>
+<a class="glass-card rounded-xl p-6 flex items-center justify-between group" href="#">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">diversity_3</span>
+</div>
+<div>
+<h4 class="font-label-bold text-on-surface">Gestión de Alumnos</h4>
+<p class="text-xs text-on-surface-variant">Directorio y perfiles</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+</a>
+<a class="glass-card rounded-xl p-6 flex items-center justify-between group" href="#">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-tertiary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary">request_quote</span>
+</div>
+<div>
+<h4 class="font-label-bold text-on-surface">Control de Pagos</h4>
+<p class="text-xs text-on-surface-variant">Mensualidades y becas</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+</a>
+<a class="glass-card rounded-xl p-6 flex items-center justify-between group" href="#">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+</div>
+<div>
+<h4 class="font-label-bold text-on-surface">Asistencias</h4>
+<p class="text-xs text-on-surface-variant">Pase de lista diario</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+</a>
+<a class="glass-card rounded-xl p-6 flex items-center justify-between group" href="#">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-on-tertiary-fixed-variant/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary-fixed">event_available</span>
+</div>
+<div>
+<h4 class="font-label-bold text-on-surface">Calendario de Eventos</h4>
+<p class="text-xs text-on-surface-variant">Clases magistrales y shows</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+</a>
+</div>
+<!-- Side Sidebar: Mass Notification & Recent Activity -->
+<div class="space-y-stack-gap">
+<h3 class="font-label-bold text-label-bold text-on-surface mb-2">Acciones Rápidas</h3>
+<button class="w-full bg-primary-container text-on-primary-container font-label-bold text-label-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined">campaign</span>
+                    Enviar aviso masivo
+                </button>
+<div class="glass-card rounded-xl overflow-hidden">
+<div class="p-glass-padding border-b border-white/5">
+<h4 class="font-label-bold text-label-bold text-on-surface">Actividad Reciente</h4>
+</div>
+<div class="p-glass-padding space-y-4">
+<div class="flex items-start gap-3">
+<div class="w-2 h-2 rounded-full bg-tertiary mt-2"></div>
+<div>
+<p class="text-sm text-on-surface">Pago registrado: <span class="font-bold">Valeria M.</span></p>
+<p class="text-xs text-on-surface-variant">Hace 15 min</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-2 h-2 rounded-full bg-primary mt-2"></div>
+<div>
+<p class="text-sm text-on-surface">Nuevo alumno inscrito</p>
+<p class="text-xs text-on-surface-variant">Hace 2 horas</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-2 h-2 rounded-full bg-amber-400 mt-2"></div>
+<div>
+<p class="text-sm text-on-surface">Evento editado: <span class="font-bold">Workshop Heels</span></p>
+<p class="text-xs text-on-surface-variant">Hace 5 horas</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Featured Visualization (Stage Mood) -->
+<section class="mt-section-margin glass-card rounded-2xl overflow-hidden relative min-h-[240px] flex items-center p-8 group">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-30 group-hover:scale-105 transition-transform duration-700" data-alt="A cinematic, low-angle shot of a professional dance studio at night with dramatic stage lighting. Blue and cool white spotlights cut through a light haze in the air, creating high contrast against the deep black shadows. The floor is a reflective dark polished wood, mirroring the intense electric blue atmospheric lights. This captures the elite, high-octane discipline of FDS Academy in a modern dark minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAK8sQKTS7200xUBLrtNqhQ3JyE5vofC0WLo4S3tJKxkNi9G3VRwLHBAYy4O64FSRW6gsp1kzKeCfpwauLILAf_KW-sUHiHsY1kZrvhUVOeuj00OrW9Y6wJ7A1a5y0ZBBEs6rmQWkpKSS8uoaByZJVhcBYw8GCtB2NX4x_uSMazQsz24SJoN9pA7BQXrhKAiO-msNQo_gLL35eZcXEg4vH1NU6qlv1_7SpItiDGsxS2GbMfaYyEpFneUDy7nAAK__sqaigZmZXUEA8c"/>
+<div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
+</div>
+<div class="relative z-10 max-w-md">
+<h3 class="font-headline-lg text-headline-lg mb-2 text-primary">El Escenario es Tuyo</h3>
+<p class="text-on-surface-variant mb-6">Administra el talento, el ritmo y el crecimiento de la academia más prestigiosa del país.</p>
+<div class="flex gap-4">
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-bold text-label-bold hover:brightness-110">Reportes Full</button>
+<button class="border border-white/20 text-on-surface px-6 py-2 rounded-full font-label-bold text-label-bold backdrop-blur-md hover:bg-white/10 transition-colors">Configuración</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Shell (For Mobile/Admin Quick Access) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe backdrop-blur-xl bg-background/10 border-t border-white/10 md:hidden">
+<a class="flex flex-col items-center justify-center text-primary bg-primary/10 rounded-xl p-2 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-bold text-[10px] mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-bold text-[10px] mt-1">Alumnos</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-bold text-[10px] mt-1">Pagos</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">event_note</span>
+<span class="font-label-bold text-[10px] mt-1">Eventos</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">more_horiz</span>
+<span class="font-label-bold text-[10px] mt-1">Más</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'scale(0.97)';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = 'scale(1)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+
+        // Atmospheric parallax effect for the featured section
+        window.addEventListener('mousemove', (e) => {
+            const featuredImg = document.querySelector('.group img');
+            if (featuredImg) {
+                const mouseX = e.clientX / window.innerWidth;
+                const mouseY = e.clientY / window.innerHeight;
+                featuredImg.style.transform = `translate(${mouseX * 10}px, ${mouseY * 10}px) scale(1.05)`;
+            }
+        });
+    </script>
+</body></html>

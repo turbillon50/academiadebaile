@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Eventos | FDS Academy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Geist:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#00531a",
+                    "surface-container": "#1e2020",
+                    "surface-tint": "#aac7ff",
+                    "surface-variant": "#333535",
+                    "surface-container-highest": "#333535",
+                    "primary": "#aac7ff",
+                    "on-secondary-fixed-variant": "#332dbc",
+                    "tertiary": "#47e266",
+                    "on-secondary-container": "#b1b1ff",
+                    "on-primary-container": "#002957",
+                    "outline": "#8b91a0",
+                    "surface-container-high": "#282a2b",
+                    "secondary-fixed": "#e2dfff",
+                    "tertiary-fixed": "#6cff82",
+                    "surface-container-lowest": "#0c0f0f",
+                    "surface-container-low": "#1a1c1c",
+                    "on-secondary": "#1800a7",
+                    "secondary-fixed-dim": "#c2c1ff",
+                    "on-secondary-fixed": "#0c006b",
+                    "background": "#121414",
+                    "on-primary-fixed-variant": "#00468d",
+                    "on-primary": "#003064",
+                    "inverse-primary": "#005db8",
+                    "surface": "#121414",
+                    "on-primary-fixed": "#001b3e",
+                    "tertiary-fixed-dim": "#47e266",
+                    "inverse-surface": "#e2e2e2",
+                    "primary-fixed": "#d6e3ff",
+                    "on-tertiary-fixed": "#002106",
+                    "on-tertiary-container": "#00320d",
+                    "secondary": "#c2c1ff",
+                    "on-surface-variant": "#c0c6d6",
+                    "on-error": "#690005",
+                    "on-tertiary": "#003910",
+                    "error-container": "#93000a",
+                    "primary-container": "#3e90ff",
+                    "surface-dim": "#121414",
+                    "surface-bright": "#37393a",
+                    "on-surface": "#e2e2e2",
+                    "on-background": "#e2e2e2",
+                    "secondary-container": "#3630bf",
+                    "primary-fixed-dim": "#aac7ff",
+                    "outline-variant": "#414754",
+                    "tertiary-container": "#00a73e",
+                    "inverse-on-surface": "#2f3131",
+                    "error": "#ffb4ab",
+                    "on-error-container": "#ffdad6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "12px",
+                    "section-margin": "32px",
+                    "container-margin": "20px",
+                    "glass-padding": "20px",
+                    "stack-gap": "16px"
+            },
+            "fontFamily": {
+                    "headline-xl": ["Geist"],
+                    "headline-lg": ["Geist"],
+                    "label-bold": ["Geist"],
+                    "body-md": ["Inter"],
+                    "status-pill": ["Inter"],
+                    "headline-lg-mobile": ["Geist"]
+            },
+            "fontSize": {
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "status-pill": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      body {
+        background-color: #000000;
+        color: #e2e2e2;
+        -webkit-font-smoothing: antialiased;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .glass-card:active {
+        transform: scale(0.98);
+      }
+      .nav-glass {
+        backdrop-filter: blur(20px);
+        background: rgba(18, 20, 20, 0.8);
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .custom-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-body-md selection:bg-primary/30">
+<!-- Top AppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-container-margin h-16 backdrop-blur-xl bg-background/10 border-b border-white/10">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border border-primary/20 p-0.5 overflow-hidden flex items-center justify-center bg-black">
+<img alt="FDS Logo" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8KtbV7LAf5fgjMEwORpLqLR1ps01JxbnLAKl1KW3F-j1tV25rDMrepuP300NRfLUfPcoWb9QqIceX7QiN7GbtrBUA4BaD5yC-MmSj6xyq5dkNAyxh9zj3GLgfZyqVu_Qb0iGMzcqPshTeyV6lH1vyQ3EVzoEtjUY1aEdIv5mzJExrSjCI_vLrQVSK6lYHJLcSUrM6BwjcPPdFy7jyAWCSAuuQpVtxmPAzdjJL0XqDD9pa103FKqBTutvr4EkpdbGInO62o2fXrAgg"/>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">FDS Academy</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="notifications">notifications</span>
+</button>
+</header>
+<main class="pt-24 pb-32 px-container-margin">
+<!-- Section: Title & Filter -->
+<section class="mb-section-margin">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile mb-6">Próximos Eventos</h2>
+<div class="flex gap-4 overflow-x-auto custom-scrollbar -mx-container-margin px-container-margin pb-2">
+<button class="px-6 py-2 rounded-full bg-primary text-on-primary font-label-bold text-label-bold whitespace-nowrap">Todos</button>
+<button class="px-6 py-2 rounded-full border border-white/10 text-on-surface-variant font-label-bold text-label-bold whitespace-nowrap hover:bg-white/5 transition-colors">Workshops</button>
+<button class="px-6 py-2 rounded-full border border-white/10 text-on-surface-variant font-label-bold text-label-bold whitespace-nowrap hover:bg-white/5 transition-colors">Competencias</button>
+<button class="px-6 py-2 rounded-full border border-white/10 text-on-surface-variant font-label-bold text-label-bold whitespace-nowrap hover:bg-white/5 transition-colors">Presentaciones</button>
+</div>
+</section>
+<!-- Bento Style Event Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-gap">
+<!-- Event 1: Hero Card -->
+<article class="glass-card rounded-xl overflow-hidden group">
+<div class="relative h-64 w-full">
+<img class="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-500" data-alt="A professional contemporary dance performance on a dark stage with dramatic spotlights, featuring elite dancers in dynamic mid-air poses. The atmosphere is intense and artistic, with high-octane energy and sharp, disciplined movements captured in high contrast. The color palette emphasizes deep blacks and vibrant electric blue lighting accents consistent with a premium studio environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDO23_TCKC4GOppVaCcBpqo8n8qK6tY7i6oyR68S8TYmtKkmBmWxyCQ0ULjpOaFhPU3mKfZAw2R-6AE8nT9BWtWLmicuclQnbFOlc8eZBDdiOeumMSuCZ-oDpPRQDabPWw5603ziEK3ND9nbNd9MgqPI2j8H_NtohchjWkrTKKmRGfrLowfFk1H61RK8BPwn25Mc-fHJl366Pi43aXarQxmizlWlzPFK3BAejM8QXjGP259-VdEFk8SjYkx1-v_7rLY0O6_A6Yr9e8U"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+<div class="absolute top-4 left-4">
+<span class="px-3 py-1 bg-primary-container/80 backdrop-blur-md rounded-full text-on-primary-container font-status-pill text-status-pill">PRESENTACIÓN</span>
+</div>
+</div>
+<div class="p-glass-padding">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">Presentación de Fin de Cursos</h3>
+<div class="flex flex-col gap-2 mb-6">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+<span class="text-label-bold font-label-bold">Teatro de la Ciudad</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="calendar_today">calendar_today</span>
+<span class="text-label-bold font-label-bold">Domingo 30 de junio · 5:00 PM</span>
+</div>
+</div>
+<button class="w-full py-4 rounded-full bg-primary text-on-primary font-label-bold text-label-bold hover:brightness-110 active:scale-95 transition-all">
+                        Ver detalles
+                    </button>
+</div>
+</article>
+<!-- Event 2: Compact Bento Card -->
+<article class="glass-card rounded-xl overflow-hidden group">
+<div class="relative h-64 w-full">
+<img class="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-500" data-alt="A high-energy hip hop dance workshop taking place in a modern studio with reflective floors and mirrors. A group of ambitious students is following a professional instructor in a disciplined, synchronized routine. The lighting is moody with electric blue neon tubes on the ceiling, creating a dark minimalistic aesthetic focused on movement and flow." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPU4prI_1J_6_-r5BvCK7UtJoz9QIg0qzGerjAan_-55OQ5KQ8HjNfbibk_pP6kwN1kEVNYL54J-mWrVMmjY6bmJb-bW092-nywrfulLvsFGKZ5cJea-9A7QnMKfQ32xQYyU2qG5LsB8Y9WBoL6jx8W9rRFZ8LVBsVJNd5e6p8mm4fkTJeucoPt-H8P2JnuMHa0_vNtdsGVcUKyazKEAg4bAIe1lXvEonGdMHgUfg-Yw3560FrNHEoZ0j9NrBBS67Dl2rH1cnF5W2V"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+<div class="absolute top-4 left-4">
+<span class="px-3 py-1 bg-tertiary-container/80 backdrop-blur-md rounded-full text-on-tertiary-container font-status-pill text-status-pill">WORKSHOP</span>
+</div>
+</div>
+<div class="p-glass-padding">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">Taller de Hip Hop</h3>
+<div class="flex flex-col gap-2 mb-6">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="meeting_room">meeting_room</span>
+<span class="text-label-bold font-label-bold">Salón 3 - FDS Academy</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="calendar_today">calendar_today</span>
+<span class="text-label-bold font-label-bold">Sábado 22 de junio · 11:00 AM</span>
+</div>
+</div>
+<button class="w-full py-4 rounded-full border border-primary text-primary font-label-bold text-label-bold hover:bg-primary/5 active:scale-95 transition-all">
+                        Inscribirme
+                    </button>
+</div>
+</article>
+<!-- Event 3: Secondary Card -->
+<article class="glass-card rounded-xl overflow-hidden group flex flex-col md:flex-row md:col-span-2">
+<div class="relative h-48 md:h-auto md:w-1/3">
+<img class="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-500" data-alt="A cinematic capture of a regional dance competition, showing a solo performer in a spotlight against a pitch-black background. The dancer is in a graceful, disciplined pose, wearing a minimalist costume that reflects the electric blue lighting. The overall scene is elite and sophisticated, portraying the rigor and artistry of professional dance at its peak." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCM2Ad5Z6NE_rOwBMGS-oMNqlZ9ql5nmPiJFf52Z-du8EkYX8dn1TgFK_W8w2MFDcCKn5XKEwS5S-usidhpFBlj6AJM0lJM3ULxthO5CS3cx654RNcQjwSVfQiP_G4HLcHEAp05biGKEpMgGYzRRIzDfs-t8ZrZPiua2qHYpsHPf4npEd67Sh2tMvPQc6pUHZP3-x-YS2SlEa34L0lWIuLcdlMqbZYFZIUFNsl7Vd2351b6WTXU7Bx2Q6qAXPvRTeviTpzrNdXezijg"/>
+<div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-background via-transparent to-transparent"></div>
+</div>
+<div class="p-glass-padding flex-1 flex flex-col justify-center">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Concurso Regional de Talentos</h3>
+<span class="px-3 py-1 bg-error-container/40 border border-error/20 backdrop-blur-md rounded-full text-error font-status-pill text-status-pill">COMPETENCIA</span>
+</div>
+<p class="text-on-surface-variant mb-4 font-body-md line-clamp-2">Participa y demuestra tus habilidades frente a jueces de talla internacional en el evento más esperado del año.</p>
+<div class="flex flex-wrap gap-x-6 gap-y-2 mb-6">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+<span class="text-label-bold font-label-bold">Auditorio Nacional</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="calendar_today">calendar_today</span>
+<span class="text-label-bold font-label-bold">Domingo 14 de julio · 10:00 AM</span>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="flex-1 py-4 rounded-full bg-primary text-on-primary font-label-bold text-label-bold hover:brightness-110 active:scale-95 transition-all">
+                            Ver detalles
+                        </button>
+</div>
+</div>
+</article>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe backdrop-blur-xl bg-background/10 border-t border-white/10 rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-bold text-[10px] mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span class="font-label-bold text-[10px] mt-1">Classes</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-bold text-[10px] mt-1">Payments</span>
+</a>
+<!-- Active Tab: Events -->
+<a class="flex flex-col items-center justify-center text-primary bg-primary/10 rounded-xl p-2 transition-all scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="event" data-weight="fill">event</span>
+<span class="font-label-bold text-[10px] mt-1">Events</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-bold text-[10px] mt-1">Profile</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for horizontal scrolling active states
+        const filterButtons = document.querySelectorAll('section div button');
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => {
+                    b.classList.remove('bg-primary', 'text-on-primary');
+                    b.classList.add('border', 'border-white/10', 'text-on-surface-variant');
+                });
+                btn.classList.add('bg-primary', 'text-on-primary');
+                btn.classList.remove('border', 'border-white/10', 'text-on-surface-variant');
+            });
+        });
+
+        // Add glass pulse effect on load
+        window.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.glass-card').forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body></html>

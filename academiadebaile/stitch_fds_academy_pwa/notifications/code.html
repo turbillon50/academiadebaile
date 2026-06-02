@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Notifications - FDS Academy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Geist:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#00531a",
+                    "surface-container": "#1e2020",
+                    "surface-tint": "#aac7ff",
+                    "surface-variant": "#333535",
+                    "surface-container-highest": "#333535",
+                    "primary": "#aac7ff",
+                    "on-secondary-fixed-variant": "#332dbc",
+                    "tertiary": "#47e266",
+                    "on-secondary-container": "#b1b1ff",
+                    "on-primary-container": "#002957",
+                    "outline": "#8b91a0",
+                    "surface-container-high": "#282a2b",
+                    "secondary-fixed": "#e2dfff",
+                    "tertiary-fixed": "#6cff82",
+                    "surface-container-lowest": "#0c0f0f",
+                    "surface-container-low": "#1a1c1c",
+                    "on-secondary": "#1800a7",
+                    "secondary-fixed-dim": "#c2c1ff",
+                    "on-secondary-fixed": "#0c006b",
+                    "background": "#121414",
+                    "on-primary-fixed-variant": "#00468d",
+                    "on-primary": "#003064",
+                    "inverse-primary": "#005db8",
+                    "surface": "#121414",
+                    "on-primary-fixed": "#001b3e",
+                    "tertiary-fixed-dim": "#47e266",
+                    "inverse-surface": "#e2e2e2",
+                    "primary-fixed": "#d6e3ff",
+                    "on-tertiary-fixed": "#002106",
+                    "on-tertiary-container": "#00320d",
+                    "secondary": "#c2c1ff",
+                    "on-surface-variant": "#c0c6d6",
+                    "on-error": "#690005",
+                    "on-tertiary": "#003910",
+                    "error-container": "#93000a",
+                    "primary-container": "#3e90ff",
+                    "surface-dim": "#121414",
+                    "surface-bright": "#37393a",
+                    "on-surface": "#e2e2e2",
+                    "on-background": "#e2e2e2",
+                    "secondary-container": "#3630bf",
+                    "primary-fixed-dim": "#aac7ff",
+                    "outline-variant": "#414754",
+                    "tertiary-container": "#00a73e",
+                    "inverse-on-surface": "#2f3131",
+                    "error": "#ffb4ab",
+                    "on-error-container": "#ffdad6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "12px",
+                    "section-margin": "32px",
+                    "container-margin": "20px",
+                    "glass-padding": "20px",
+                    "stack-gap": "16px"
+            },
+            "fontFamily": {
+                    "headline-xl": ["Geist"],
+                    "headline-lg": ["Geist"],
+                    "label-bold": ["Geist"],
+                    "body-md": ["Inter"],
+                    "status-pill": ["Inter"],
+                    "headline-lg-mobile": ["Geist"]
+            },
+            "fontSize": {
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "status-pill": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #000000;
+            color: #e2e2e2;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+        }
+        .glass-card:active {
+            transform: scale(0.98);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-container-margin h-16 backdrop-blur-xl bg-background/10 border-b border-white/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 overflow-hidden">
+<img alt="Logo" class="w-full h-full object-cover" data-alt="A macro close-up of a high-end chrome and glass minimalist logo for an elite dance academy. The lighting is dramatic, highlighting sharp edges and translucent textures against a deep black void. The overall aesthetic is high-octane and disciplined, with subtle electric blue light reflections dancing off the polished surfaces." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBpZqRVfR5yzUGpCKPMQSmjhOtfpx8bqE5Rktagm90ZhSsQSrrqXOd6Tqa_YPE1kTpTRZwopYbFiV5_yxQR-hc9H_JaP_NXGP9DU9haVVE6x5tqf7SLq5rBBAPBXQPx-hPi69QKc8Khv9B46CReLqXN4dhg_tuW_R2pFvZOsFH5Y9JrD_yWkGxpUEpPX2W-c3rkajFuK8XwgAEKgd30Zn78Yo9isyH1g-6Atm3F1d3TAStbc9lPr382o--rF629Dz3nyIbpVSSD_9d"/>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">Avisos</h1>
+</div>
+<button class="text-on-surface-variant hover:opacity-80 transition-transform active:scale-95">
+<span class="material-symbols-outlined" style="font-size: 24px;">notifications</span>
+</button>
+</header>
+<main class="pt-24 px-container-margin space-y-stack-gap">
+<!-- Action Header -->
+<div class="flex justify-between items-end mb-4">
+<div>
+<p class="text-on-surface-variant/60 font-label-bold text-label-bold uppercase tracking-widest">Recientes</p>
+</div>
+<button class="text-primary font-label-bold text-label-bold hover:opacity-80 active:scale-95 transition-all" onclick="markAllRead()">
+                Marcar todas como leídas
+            </button>
+</div>
+<!-- Notification List -->
+<div class="space-y-4" id="notification-list">
+<!-- Notification 1 -->
+<div class="glass-card rounded-xl p-glass-padding flex gap-4 items-start relative overflow-hidden group">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined">credit_card</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-label-bold text-label-bold text-white mb-1">Recordatorio de pago</h3>
+<span class="text-[10px] text-on-surface-variant/40 font-status-pill">HACE 2H</span>
+</div>
+<p class="font-body-md text-[14px] leading-relaxed text-on-surface-variant">Tu mensualidad vence pronto. Evita recargos realizando tu pago antes del 15 de junio.</p>
+</div>
+<div class="absolute right-0 top-0 h-full w-1 bg-primary"></div>
+</div>
+<!-- Notification 2 -->
+<div class="glass-card rounded-xl p-glass-padding flex gap-4 items-start relative overflow-hidden group">
+<div class="w-12 h-12 rounded-full bg-tertiary/10 flex items-center justify-center text-tertiary flex-shrink-0">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-label-bold text-label-bold text-white mb-1">Cambio de horario</h3>
+<span class="text-[10px] text-on-surface-variant/40 font-status-pill">AYER</span>
+</div>
+<p class="font-body-md text-[14px] leading-relaxed text-on-surface-variant">La clase de Ballet del viernes se recorre 30 min por ensayo general. ¡Te esperamos!</p>
+</div>
+</div>
+<!-- Notification 3 -->
+<div class="glass-card rounded-xl p-glass-padding flex gap-4 items-start relative overflow-hidden group">
+<div class="w-12 h-12 rounded-full bg-secondary-container/20 flex items-center justify-center text-secondary flex-shrink-0">
+<span class="material-symbols-outlined">campaign</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-label-bold text-label-bold text-white mb-1">Nuevo evento</h3>
+<span class="text-[10px] text-on-surface-variant/40 font-status-pill">2 DÍAS</span>
+</div>
+<p class="font-body-md text-[14px] leading-relaxed text-on-surface-variant">Inscripciones abiertas para la competencia regional. ¡Demuestra tu talento en el escenario!</p>
+</div>
+</div>
+<!-- Notification 4 (Past) -->
+<div class="opacity-60 glass-card rounded-xl p-glass-padding flex gap-4 items-start relative overflow-hidden group">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant flex-shrink-0">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-label-bold text-label-bold text-white mb-1">Pago exitoso</h3>
+<span class="text-[10px] text-on-surface-variant/40 font-status-pill">5 DÍAS</span>
+</div>
+<p class="font-body-md text-[14px] leading-relaxed text-on-surface-variant">Hemos recibido tu pago de la mensualidad de Mayo. ¡Gracias!</p>
+</div>
+</div>
+</div>
+<!-- Suggestion Card -->
+<div class="mt-section-margin glass-card rounded-2xl overflow-hidden relative min-h-[160px] flex items-center p-glass-padding">
+<div class="absolute inset-0 z-0">
+<img alt="Dance" class="w-full h-full object-cover opacity-30 grayscale" data-alt="A cinematic, low-angle shot of a professional dancer captured in mid-air during an athletic leap. The background is a stark, pitch-black studio with atmospheric smoke catching sharp, electric blue rim lighting. The style is dark minimalism, emphasizing the physical rigor and high-octane energy of contemporary movement." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRY9cns6ppdFCQP8GkXMwpfHvtgXVzZu6m-0dgwlkd4gST4xIhy5HiAYRttlxwqicu2NisqnNkOA30FLkH6Lrip8I4Kx5oG3A_HD8zmSY63ox2lycBs0W2s74ylxVC71WY9kE_q9afPY_E_Qn66Z9TsQJAuDeaqBys6Ho03gy4Yl_m6cKNeEpiqQq8Sv1D_jryKnM_YcNgykSD4cLSCbwWapfbUcD3AGBY5jAZMAlpnTp1qjrQVdP2fR3Lkbv7BfI9xiHfxIi7DREW"/>
+<div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
+</div>
+<div class="relative z-10 max-w-[60%]">
+<h4 class="font-headline-lg-mobile text-headline-lg-mobile text-white mb-2 leading-tight">¿Listo para el escenario?</h4>
+<p class="text-on-surface-variant text-[14px] mb-4">Agenda una asesoría personalizada hoy.</p>
+<button class="bg-primary text-on-primary font-label-bold text-label-bold px-4 py-2 rounded-full active:scale-95 transition-all">Ver horarios</button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe backdrop-blur-xl bg-background/10 border-t border-white/10 rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-bold text-[10px] mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-label-bold text-[10px] mt-1">Classes</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-bold text-[10px] mt-1">Payments</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary bg-primary/10 rounded-xl p-2 transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">event</span>
+<span class="font-label-bold text-[10px] mt-1">Events</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-[10px] mt-1">Profile</span>
+</a>
+</nav>
+<script>
+        function markAllRead() {
+            const indicators = document.querySelectorAll('.absolute.right-0.top-0.h-full.w-1.bg-primary');
+            indicators.forEach(indicator => {
+                indicator.style.transition = 'opacity 0.5s ease';
+                indicator.style.opacity = '0';
+                setTimeout(() => indicator.remove(), 500);
+            });
+            
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach(card => {
+                card.classList.add('opacity-70');
+            });
+
+            // Feedback toast simulation
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-24 left-1/2 -translate-x-1/2 bg-primary text-on-primary px-6 py-3 rounded-full font-label-bold shadow-lg z-[100] animate-bounce';
+            toast.innerText = 'Todos los avisos marcados como leídos';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Simple parallax or hover effect for cards if cursor was available
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('touchend', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

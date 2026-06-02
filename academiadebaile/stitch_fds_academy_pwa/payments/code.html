@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Pagos - FDS Academy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Geist:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#00531a",
+                    "surface-container": "#1e2020",
+                    "surface-tint": "#aac7ff",
+                    "surface-variant": "#333535",
+                    "surface-container-highest": "#333535",
+                    "primary": "#aac7ff",
+                    "on-secondary-fixed-variant": "#332dbc",
+                    "tertiary": "#47e266",
+                    "on-secondary-container": "#b1b1ff",
+                    "on-primary-container": "#002957",
+                    "outline": "#8b91a0",
+                    "surface-container-high": "#282a2b",
+                    "secondary-fixed": "#e2dfff",
+                    "tertiary-fixed": "#6cff82",
+                    "surface-container-lowest": "#0c0f0f",
+                    "surface-container-low": "#1a1c1c",
+                    "on-secondary": "#1800a7",
+                    "secondary-fixed-dim": "#c2c1ff",
+                    "on-secondary-fixed": "#0c006b",
+                    "background": "#000000",
+                    "on-primary-fixed-variant": "#00468d",
+                    "on-primary": "#003064",
+                    "inverse-primary": "#005db8",
+                    "surface": "#121414",
+                    "on-primary-fixed": "#001b3e",
+                    "tertiary-fixed-dim": "#47e266",
+                    "inverse-surface": "#e2e2e2",
+                    "primary-fixed": "#d6e3ff",
+                    "on-tertiary-fixed": "#002106",
+                    "on-tertiary-container": "#00320d",
+                    "secondary": "#c2c1ff",
+                    "on-surface-variant": "#c0c6d6",
+                    "on-error": "#690005",
+                    "on-tertiary": "#003910",
+                    "error-container": "#93000a",
+                    "primary-container": "#3e90ff",
+                    "surface-dim": "#121414",
+                    "surface-bright": "#37393a",
+                    "on-surface": "#e2e2e2",
+                    "on-background": "#e2e2e2",
+                    "secondary-container": "#3630bf",
+                    "primary-fixed-dim": "#aac7ff",
+                    "outline-variant": "#414754",
+                    "tertiary-container": "#00a73e",
+                    "inverse-on-surface": "#2f3131",
+                    "error": "#ffb4ab",
+                    "on-error-container": "#ffdad6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "12px",
+                    "section-margin": "32px",
+                    "container-margin": "20px",
+                    "glass-padding": "20px",
+                    "stack-gap": "16px"
+            },
+            "fontFamily": {
+                    "headline-xl": ["Geist"],
+                    "headline-lg": ["Geist"],
+                    "label-bold": ["Geist"],
+                    "body-md": ["Inter"],
+                    "status-pill": ["Inter"],
+                    "headline-lg-mobile": ["Geist"]
+            },
+            "fontSize": {
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "status-pill": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .stage-gradient {
+            background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%);
+        }
+        body {
+            background-color: #000000;
+            color: #e2e2e2;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-body-md overflow-x-hidden pb-24">
+<!-- Top Navigation Shell -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-container-margin h-16 backdrop-blur-xl bg-background/10 border-b border-white/10">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center overflow-hidden bg-surface-container">
+<img class="w-8 h-8 object-contain" data-alt="A professional dance studio logo featuring a minimalist white silhouette of a contemporary dancer in a dynamic pose against a solid black circular background. The logo is framed by sleek electric blue arcs that suggest movement and energy, maintaining a premium and high-octane aesthetic for a dance academy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeYLdTYUeKJxVYKhdSaLJGkqVfZIGwCcTKaS8hoLNMdiPNr39GgQiDGVwAekRWhphGL7VA2CLc879g2iMeUWUccU_HQn3nn2hWmWXrG2TqXhzKEY_DT81MkOu6gClCE4TZKdijzIecVfMPy3Di-f8d23rlxNuPYxChAFFA10FVX2Cr9PqDZotLoCqinwuWBtr-vI52i41NE75xVgrZW_OuITYrB98amVxyRe6FmG33Q7Q17mDF3ST7JRfvc-O-XZdOCAEusdvscKUE"/>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">FDS Academy</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center text-primary hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<main class="mt-20 px-container-margin max-w-2xl mx-auto space-y-section-margin">
+<!-- Saldo Actual Hero Card -->
+<section>
+<div class="glass-card rounded-xl p-glass-padding space-y-4 relative overflow-hidden">
+<!-- Decorative Glow -->
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl"></div>
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-bold text-label-bold text-on-surface-variant/70 uppercase tracking-widest">Saldo Actual</p>
+<h2 class="font-headline-xl text-headline-xl text-white mt-1">$0.00</h2>
+</div>
+<div class="bg-tertiary/20 px-3 py-1 rounded-full flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-tertiary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-status-pill text-status-pill text-tertiary">Al corriente</span>
+</div>
+</div>
+<div class="pt-4 border-t border-white/5 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<img class="h-4 opacity-70 grayscale contrast-125" data-alt="A small, stylized digital icon representing a secure financial transaction processor. The logo is clean and minimalist, rendered in a grayscale palette with high contrast to fit a dark-mode user interface. It evokes a sense of reliability and professional modern banking services for an elite academy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAc0SI8lq4ZykMcJ9X5JvNVtaLkBYODIejMtEU34aV7RyIx-cr01xIRRCbWzBcOxbHBonsLzd4HQlZmFufwYg2aFz64OiihuJvk4BoSNFVQecdjNr5ZdXo6Sk-g-QoqW_Pdq__FFyYurCYzEeBS5inhS-q25UpyYHc8E2MmkEpqLl3Fp-6C8TEpeFW0dXxHDX7SOOnQRntsq42NURCol3espSz2jQuSjHKEdhptPTftmjxxQXKY7dpWVjTPS4dx0zbWlX_HgykH5-Jc"/>
+<span class="text-[12px] text-on-surface-variant/50">Pagos protegidos</span>
+</div>
+<p class="text-[12px] text-on-surface-variant/50">Próximo: 01 Jul 2024</p>
+</div>
+</div>
+</section>
+<!-- Main CTA -->
+<section>
+<button class="w-full bg-primary-container text-on-primary-container font-label-bold text-label-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all duration-200">
+<span class="material-symbols-outlined">payments</span>
+                Pagar Mensualidad Julio
+            </button>
+</section>
+<!-- Historial de Pagos -->
+<section class="space-y-4">
+<div class="flex justify-between items-end">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-white">Historial de Pagos</h3>
+<button class="font-label-bold text-label-bold text-primary hover:opacity-80">Ver todo</button>
+</div>
+<div class="space-y-3">
+<!-- Payment Item 1 -->
+<div class="glass-card rounded-xl p-4 flex items-center justify-between hover:border-white/20 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">calendar_today</span>
+</div>
+<div>
+<p class="font-label-bold text-label-bold text-white">Junio 2024</p>
+<p class="text-[12px] text-on-surface-variant/60">Pagado el 15 Jun 2024</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-right">
+<p class="font-label-bold text-label-bold text-white">$850.00</p>
+<p class="text-[10px] text-tertiary font-bold uppercase">Pagado</p>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center bg-white/5 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</div>
+</div>
+<!-- Payment Item 2 -->
+<div class="glass-card rounded-xl p-4 flex items-center justify-between hover:border-white/20 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">calendar_today</span>
+</div>
+<div>
+<p class="font-label-bold text-label-bold text-white">Mayo 2024</p>
+<p class="text-[12px] text-on-surface-variant/60">Pagado el 12 May 2024</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-right">
+<p class="font-label-bold text-label-bold text-white">$850.00</p>
+<p class="text-[10px] text-tertiary font-bold uppercase">Pagado</p>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center bg-white/5 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</div>
+</div>
+<!-- Payment Item 3 -->
+<div class="glass-card rounded-xl p-4 flex items-center justify-between opacity-60">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">calendar_today</span>
+</div>
+<div>
+<p class="font-label-bold text-label-bold text-white">Abril 2024</p>
+<p class="text-[12px] text-on-surface-variant/60">Pagado el 09 Abr 2024</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-right">
+<p class="font-label-bold text-label-bold text-white">$850.00</p>
+<p class="text-[10px] text-tertiary font-bold uppercase">Pagado</p>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center bg-white/5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Payment Methods / Partners -->
+<section class="pb-8">
+<h4 class="font-label-bold text-label-bold text-on-surface-variant/50 uppercase mb-4 text-center tracking-tighter">Métodos de Pago Soportados</h4>
+<div class="flex justify-center items-center gap-8 opacity-40 grayscale group">
+<div class="flex flex-col items-center gap-1">
+<img class="h-6" data-alt="Logo of a major digital wallet provider, rendered in a crisp, high-resolution minimalist style. The icon is isolated against a transparent-effect background and processed with a high-contrast black and white filter to seamlessly integrate into a high-end dark minimalism UI design for a professional academy application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAptEEU-Ahc7uwdgfXQ5o5o5akQ8xaMWEUU7723_Q9TiLTI3Xguh7n3HKalAX6rPGPG5k8iAQZHoKSd2XCNfm-QAJWxhsOZUlVaiHXBI2GMrc9sJXOaK5zML7N4wxq5n7BMvjk4OQLcj1_KYsZz4KYvCAjVmPAeWlkNNR5uaOPuKRjC0gGboLj3PR6c-lxtVuzhD41_BJbuYlldF5wJ9vS3HjFd0i8Vmtqa41jy3hqUR16uKqx3w872aK9NxUyoR8_m-LCbToPZDgo1"/>
+<span class="text-[10px] font-bold">Mercado Pago</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined">credit_card</span>
+<span class="text-[10px] font-bold">Visa / MC</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined">account_balance</span>
+<span class="text-[10px] font-bold">SPEI</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe backdrop-blur-xl bg-background/10 border-t border-white/10 rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-bold text-[10px] mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-label-bold text-[10px] mt-1">Classes</span>
+</a>
+<!-- ACTIVE TAB -->
+<a class="flex flex-col items-center justify-center text-primary bg-primary/10 rounded-xl p-2 scale-95 transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="font-label-bold text-[10px] mt-1">Payments</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">event</span>
+<span class="font-label-bold text-[10px] mt-1">Events</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-[10px] mt-1">Profile</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for payment cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'scale(0.98)';
+                card.style.transition = 'transform 0.15s ease';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = 'scale(1)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

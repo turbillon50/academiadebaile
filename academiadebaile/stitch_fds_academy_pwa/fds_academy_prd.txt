@@ -1,0 +1,30 @@
+# FDS Academy PWA Specification
+
+## Overview
+A world-class mobile-first PWA for dance academy management.
+
+## Tech Stack
+- Next.js 15, TypeScript, Tailwind CSS, Shadcn UI
+- Clerk (Auth), Neon (DB), Resend (Email), Mercado Pago (Payments)
+
+## User Roles
+1. Student
+2. Parent
+3. Instructor
+4. Administrator
+
+## Core Flows & Screens
+1. **Auth**: Login (Email/Pass, Google, Apple).
+2. **Student Dashboard**: Welcome, upcoming class, payment status, quick actions.
+3. **Classes**: Weekly schedule, instructor details, attendance history. Categories: Ballet, Jazz, Hip Hop, Contemporary, Salsa, Urban, Kids.
+4. **Payments**: Balance, history, Mercado Pago integration, receipts.
+5. **Events**: Workshops, competitions, performances with registration.
+6. **Notifications**: Alerts for payments, class changes, and events.
+7. **Profile**: Student info, emergency contact, dance level.
+8. **Admin Panel**: Metrics (income, students), management modules for students, payments, events, and instructors.
+
+## Visual Direction
+- Dark Mode / Black Background
+- Electric Blue (#0A84FF) Accents
+- Glassmorphism UI
+- Dynamic & Youthful

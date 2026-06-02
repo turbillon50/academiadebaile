@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>FDS Academy - Mis Clases</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#00531a",
+                        "surface-container": "#1e2020",
+                        "surface-tint": "#aac7ff",
+                        "surface-variant": "#333535",
+                        "surface-container-highest": "#333535",
+                        "primary": "#aac7ff",
+                        "on-secondary-fixed-variant": "#332dbc",
+                        "tertiary": "#47e266",
+                        "on-secondary-container": "#b1b1ff",
+                        "on-primary-container": "#002957",
+                        "outline": "#8b91a0",
+                        "surface-container-high": "#282a2b",
+                        "secondary-fixed": "#e2dfff",
+                        "tertiary-fixed": "#6cff82",
+                        "surface-container-lowest": "#0c0f0f",
+                        "surface-container-low": "#1a1c1c",
+                        "on-secondary": "#1800a7",
+                        "secondary-fixed-dim": "#c2c1ff",
+                        "on-secondary-fixed": "#0c006b",
+                        "background": "#121414",
+                        "on-primary-fixed-variant": "#00468d",
+                        "on-primary": "#003064",
+                        "inverse-primary": "#005db8",
+                        "surface": "#121414",
+                        "on-primary-fixed": "#001b3e",
+                        "tertiary-fixed-dim": "#47e266",
+                        "inverse-surface": "#e2e2e2",
+                        "primary-fixed": "#d6e3ff",
+                        "on-tertiary-fixed": "#002106",
+                        "on-tertiary-container": "#00320d",
+                        "secondary": "#c2c1ff",
+                        "on-surface-variant": "#c0c6d6",
+                        "on-error": "#690005",
+                        "on-tertiary": "#003910",
+                        "error-container": "#93000a",
+                        "primary-container": "#3e90ff",
+                        "surface-dim": "#121414",
+                        "surface-bright": "#37393a",
+                        "on-surface": "#e2e2e2",
+                        "on-background": "#e2e2e2",
+                        "secondary-container": "#3630bf",
+                        "primary-fixed-dim": "#aac7ff",
+                        "outline-variant": "#414754",
+                        "tertiary-container": "#00a73e",
+                        "inverse-on-surface": "#2f3131",
+                        "error": "#ffb4ab",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "12px",
+                        "section-margin": "32px",
+                        "container-margin": "20px",
+                        "glass-padding": "20px",
+                        "stack-gap": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "label-bold": ["Geist"],
+                        "body-md": ["Inter"],
+                        "status-pill": ["Inter"],
+                        "headline-lg-mobile": ["Geist"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "status-pill": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #000000;
+            color: #e2e2e2;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .active-day-shadow {
+            box-shadow: 0 0 20px rgba(170, 199, 255, 0.3);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-body-md overflow-x-hidden pb-24">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-container-margin h-16 backdrop-blur-xl bg-background/10 border-b border-white/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden">
+<img alt="FDS Academy Logo" class="w-full h-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyAx2zrZoffQBFno93ZhMOO9uv3nDvXH_muuL2RE8xO96m2fqqe6v0zbxPgLIvFOMnZXzn71-s_TNL2I_J2n-P_4QH7Kt32nekpyPhoaetCGgfJBppwYj4VjeRnhedMn5yol-LDgR_k8GP36fz-RppKVlqpW9jRBllDCL96bt0oF9gI2Ropzyc2TfeSz-Zh48vDuq7I2NP1aXDIX2SgjSoRGRjbaxFU5rBLmO0FbzMHjygP8rn7UTINZGz0EIUHgk9owHefNAuszBd"/>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">FDS Academy</h1>
+</div>
+<button class="material-symbols-outlined text-primary hover:opacity-80 transition-transform active:scale-95">notifications</button>
+</header>
+<main class="mt-20 px-container-margin">
+<!-- Weekly Calendar Section -->
+<section class="mb-section-margin">
+<div class="flex justify-between items-center mb-4">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Mis clases</h2>
+<span class="text-primary font-label-bold text-label-bold">Junio 2024</span>
+</div>
+<div class="flex justify-between gap-2 overflow-x-auto hide-scrollbar pb-2">
+<!-- Days of the week -->
+<div class="flex flex-col items-center justify-center min-w-[44px] h-20 rounded-xl glass-card text-on-surface-variant/60">
+<span class="text-[10px] font-bold uppercase tracking-widest">Lun</span>
+<span class="text-lg font-bold">10</span>
+</div>
+<div class="flex flex-col items-center justify-center min-w-[44px] h-20 rounded-xl bg-primary text-on-primary-container active-day-shadow">
+<span class="text-[10px] font-bold uppercase tracking-widest">Mar</span>
+<span class="text-lg font-bold">11</span>
+</div>
+<div class="flex flex-col items-center justify-center min-w-[44px] h-20 rounded-xl glass-card text-on-surface-variant/60">
+<span class="text-[10px] font-bold uppercase tracking-widest">Mié</span>
+<span class="text-lg font-bold">12</span>
+</div>
+<div class="flex flex-col items-center justify-center min-w-[44px] h-20 rounded-xl glass-card text-on-surface-variant/60">
+<span class="text-[10px] font-bold uppercase tracking-widest">Jue</span>
+<span class="text-lg font-bold">13</span>
+</div>
+<div class="flex flex-col items-center justify-center min-w-[44px] h-20 rounded-xl glass-card text-on-surface-variant/60">
+<span class="text-[10px] font-bold uppercase tracking-widest">Vie</span>
+<span class="text-lg font-bold">14</span>
+</div>
+<div class="flex flex-col items-center justify-center min-w-[44px] h-20 rounded-xl glass-card text-on-surface-variant/60">
+<span class="text-[10px] font-bold uppercase tracking-widest">Sáb</span>
+<span class="text-lg font-bold">15</span>
+</div>
+</div>
+</section>
+<!-- Categories Filter -->
+<section class="mb-section-margin">
+<div class="flex gap-3 overflow-x-auto hide-scrollbar">
+<button class="px-5 py-2 rounded-full bg-primary text-on-primary-container font-label-bold text-label-bold whitespace-nowrap">Ballet</button>
+<button class="px-5 py-2 rounded-full glass-card text-on-surface-variant font-label-bold text-label-bold whitespace-nowrap">Jazz</button>
+<button class="px-5 py-2 rounded-full glass-card text-on-surface-variant font-label-bold text-label-bold whitespace-nowrap">Hip Hop</button>
+<button class="px-5 py-2 rounded-full glass-card text-on-surface-variant font-label-bold text-label-bold whitespace-nowrap">Salsa</button>
+</div>
+</section>
+<!-- Enrolled Classes List -->
+<section class="mb-section-margin">
+<div class="flex flex-col gap-stack-gap">
+<!-- Class Card 1 -->
+<div class="glass-card p-glass-padding rounded-2xl flex items-center gap-4 group active:scale-[0.98] transition-all">
+<div class="w-14 h-14 rounded-xl bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container text-3xl">school</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile leading-none mb-1">Ballet</h3>
+<span class="text-tertiary font-status-pill text-status-pill px-2 py-0.5 rounded-full border border-tertiary/30 bg-tertiary/10">Activo</span>
+</div>
+<p class="text-on-surface-variant text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> 16:00 - 17:30
+                        </p>
+<div class="flex justify-between mt-2">
+<p class="text-primary font-label-bold text-label-bold">Salón 1</p>
+<p class="text-on-surface/60 text-xs">Prof. Ana</p>
+</div>
+</div>
+</div>
+<!-- Class Card 2 -->
+<div class="glass-card p-glass-padding rounded-2xl flex items-center gap-4 active:scale-[0.98] transition-all">
+<div class="w-14 h-14 rounded-xl bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container text-3xl">directions_run</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile leading-none mb-1">Jazz Funk</h3>
+<span class="text-tertiary font-status-pill text-status-pill px-2 py-0.5 rounded-full border border-tertiary/30 bg-tertiary/10">Activo</span>
+</div>
+<p class="text-on-surface-variant text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> 18:00 - 19:30
+                        </p>
+<div class="flex justify-between mt-2">
+<p class="text-primary font-label-bold text-label-bold">Salón 2</p>
+<p class="text-on-surface/60 text-xs">Prof. Carlos</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Attendance History Section -->
+<section class="mb-8">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-4">Historial de Asistencia</h2>
+<div class="glass-card p-glass-padding rounded-2xl">
+<div class="flex justify-between items-end mb-6">
+<div class="flex flex-col">
+<span class="text-on-surface-variant text-xs uppercase tracking-widest font-bold">Promedio Mensual</span>
+<span class="text-3xl font-headline-xl text-primary">94%</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="material-symbols-outlined text-tertiary text-lg">trending_up</span>
+<span class="text-tertiary text-sm font-bold">+2% este mes</span>
+</div>
+</div>
+<!-- Attendance List Mini -->
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-tertiary"></div>
+<span class="font-label-bold text-label-bold">Ballet</span>
+</div>
+<span class="text-on-surface-variant text-sm">08 Jun • Presente</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-tertiary"></div>
+<span class="font-label-bold text-label-bold">Jazz Funk</span>
+</div>
+<span class="text-on-surface-variant text-sm">06 Jun • Presente</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-error"></div>
+<span class="font-label-bold text-label-bold">Ballet</span>
+</div>
+<span class="text-on-surface-variant text-sm">01 Jun • Falta</span>
+</div>
+</div>
+<button class="w-full mt-6 py-3 rounded-xl border border-primary/20 text-primary font-label-bold text-label-bold hover:bg-primary/5 transition-colors">
+                    Ver reporte detallado
+                </button>
+</div>
+</section>
+<!-- Dynamic Studio Context Image -->
+<section class="mb-section-margin">
+<div class="relative w-full h-48 rounded-2xl overflow-hidden glass-card group">
+<img class="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700" data-alt="A professional dance studio interior at night with high contrast dramatic lighting. The space features dark hardwood floors reflecting the bright electric blue neon accents along the mirrors. A few silhouette figures of dancers in motion create a sense of dynamic energy. The overall atmosphere is elite, modern, and disciplined, matching a premium dark minimalism aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeV_thTkcV0841wzAsC1o4ATjIpIQyl2wXAntR9vquTQmfOFxQ2TuPTUf2Q1tJdFSZHRL4tCQsoiskmCoPnJPpRaiDu83VkC6BvVxwsmMsAFTMI0ukJrLXv0wqF2Mjc6GSIozFFndxPU6S09FzH_Rq5XTdE9dzeUeRGDGnRWoB4fucd07TzHRf9QvNpzzR2bxljMOzkcHQTetiFExVmpWi6hR_YJjmfQGiZhymwsTVGbe0vMLqTgBWpmSPa8EHiP3PzQgbJNVOSEk0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent flex flex-col justify-end p-glass-padding">
+<h4 class="text-white font-headline-lg-mobile text-headline-lg-mobile">Próximo Taller</h4>
+<p class="text-on-surface-variant text-sm">Contemporáneo con Silvana • Sáb 22</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe backdrop-blur-xl bg-background/10 border-t border-white/10 rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 scale-95 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-bold text-[10px]">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary bg-primary/10 rounded-xl p-2 scale-95 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">school</span>
+<span class="font-label-bold text-[10px]">Classes</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 scale-95 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-bold text-[10px]">Payments</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 scale-95 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">event</span>
+<span class="font-label-bold text-[10px]">Events</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 scale-95 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-[10px]">Profile</span>
+</a>
+</nav>
+<script>
+        // Subtle micro-interaction for class cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.classList.add('scale-[0.98]');
+            });
+            card.addEventListener('touchend', () => {
+                card.classList.remove('scale-[0.98]');
+            });
+        });
+
+        // Horizontal scroll momentum effect simulation
+        const scrollContainer = document.querySelector('.hide-scrollbar');
+        if (scrollContainer) {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            scrollContainer.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - scrollContainer.offsetLeft;
+                scrollLeft = scrollContainer.scrollLeft;
+            });
+            scrollContainer.addEventListener('mouseleave', () => {
+                isDown = false;
+            });
+            scrollContainer.addEventListener('mouseup', () => {
+                isDown = false;
+            });
+            scrollContainer.addEventListener('mousemove', (e) => {
+                if(!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - scrollContainer.offsetLeft;
+                const walk = (x - startX) * 2;
+                scrollContainer.scrollLeft = scrollLeft - walk;
+            });
+        }
+    </script>
+</body></html>
