@@ -1,5 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 /**
  * Middleware de autenticación y autorización por rol.
@@ -10,7 +10,20 @@ import { NextResponse } from "next/server";
 const isAppRoute = createRouteMatcher(["/app(.*)"]);
 const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
 
-export default clerkMiddleware(async (auth, req) => {
+const DEMO = process.env.DEMO_MODE === "1";
+
+/** En modo demo no usamos Clerk: el rol vive en la cookie `demo_role`. */
+function demoMiddleware(req: NextRequest) {
+  if (isAdminRoute(req)) {
+    const role = req.cookies.get("demo_role")?.value;
+    if (role !== "admin") {
+      return NextResponse.redirect(new URL("/app", req.url));
+    }
+  }
+  return NextResponse.next();
+}
+
+const clerkAuthMiddleware = clerkMiddleware(async (auth, req) => {
   const { userId, sessionClaims, redirectToSignIn } = await auth();
 
   if (isAppRoute(req) || isAdminRoute(req)) {
@@ -29,6 +42,8 @@ export default clerkMiddleware(async (auth, req) => {
 
   return NextResponse.next();
 });
+
+export default DEMO ? demoMiddleware : clerkAuthMiddleware;
 
 export const config = {
   matcher: [

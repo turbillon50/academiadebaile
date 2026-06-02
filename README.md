@@ -8,6 +8,30 @@ PWA instalable, mobile-first, con modo claro/oscuro y diseño premium.
 
 ---
 
+## ⚡ Demo en 1 comando (sin cuentas externas)
+
+¿Solo quieres **ver la app funcionando** ya, sin abrir cuentas de Neon, Clerk
+ni Stripe? Hay un **modo demo** autosuficiente:
+
+```bash
+npm run demo
+```
+
+Esto levanta un **Postgres local en Docker**, aplica el schema, siembra datos
+de ejemplo (clases, instructores, eventos, alumnos) y arranca la app en
+`http://localhost:3000`.
+
+- **Sin login real:** Clerk se omite. Arriba a la derecha hay un selector
+  **«Demo»** para alternar entre **Alumno** (`/app`) y **Admin** (`/admin`).
+- **Sin pagos reales:** las llaves de Stripe/Mercado Pago son ficticias.
+
+> El modo demo se activa con `DEMO_MODE=1` y `NEXT_PUBLIC_DEMO_MODE=1`
+> (ver `.env.demo`). En ese modo el cliente de base de datos usa el driver
+> `node-postgres` en vez de Neon. Para **producción**, sigue la guía de abajo
+> con credenciales reales.
+
+---
+
 ## 🧱 Stack
 
 | Capa        | Tecnología                                              |

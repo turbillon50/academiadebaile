@@ -4,7 +4,10 @@ import { UserButton } from "@clerk/nextjs";
 
 import { AdminNav } from "@/components/admin/admin-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { DemoAccountButton } from "@/components/demo-role-switcher";
 import { getOrSyncUser } from "@/lib/auth";
+
+const DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === "1";
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +39,7 @@ export default async function AdminLayout({
               Vista alumno
             </Link>
             <ThemeToggle />
-            <UserButton />
+            {DEMO ? <DemoAccountButton /> : <UserButton />}
           </div>
         </div>
       </header>

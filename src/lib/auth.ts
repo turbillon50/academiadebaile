@@ -4,13 +4,24 @@
  * tabla `users` para poder hacer JOINs y reportes.
  */
 import { auth, currentUser } from "@clerk/nextjs/server";
+import { cookies } from "next/headers";
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { users, type User, type UserRole } from "@/db/schema";
 
+/** Modo demo: sin Clerk, el rol se toma de una cookie y se usa un usuario fijo. */
+const DEMO = process.env.DEMO_MODE === "1";
+const DEMO_CLERK_ID = "demo-user";
+
+async function getDemoRole(): Promise<UserRole> {
+  const role = (await cookies()).get("demo_role")?.value;
+  return role === "admin" || role === "instructor" ? role : "alumno";
+}
+
 /** Lee el rol desde los claims de la sesión de Clerk (default: alumno). */
 export async function getSessionRole(): Promise<UserRole> {
+  if (DEMO) return getDemoRole();
   const { sessionClaims } = await auth();
   const metadata = sessionClaims?.metadata as { role?: UserRole } | undefined;
   return metadata?.role ?? "alumno";
@@ -22,6 +33,8 @@ export async function getSessionRole(): Promise<UserRole> {
  * Retorna null si no hay sesión.
  */
 export async function getOrSyncUser(): Promise<User | null> {
+  if (DEMO) return getOrCreateDemoUser();
+
   const clerkUser = await currentUser();
   if (!clerkUser) return null;
 
@@ -58,6 +71,35 @@ export async function getOrSyncUser(): Promise<User | null> {
     .returning();
 
   return row ?? null;
+}
+
+/** Modo demo: crea/actualiza un usuario fijo cuyo rol viene de la cookie. */
+async function getOrCreateDemoUser(): Promise<User> {
+  const role = await getDemoRole();
+  const values = {
+    clerkId: DEMO_CLERK_ID,
+    email: "demo@academiadebaile.mx",
+    firstName: role === "admin" ? "Admin" : "Alumno",
+    lastName: "Demo",
+    imageUrl: null,
+    role,
+    updatedAt: new Date(),
+  };
+  const [row] = await db
+    .insert(users)
+    .values(values)
+    .onConflictDoUpdate({
+      target: users.clerkId,
+      set: {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        role: values.role,
+        updatedAt: values.updatedAt,
+      },
+    })
+    .returning();
+  if (!row) throw new Error("No se pudo crear el usuario demo");
+  return row;
 }
 
 /** Igual que getOrSyncUser pero lanza si no hay sesión (para zonas privadas). */

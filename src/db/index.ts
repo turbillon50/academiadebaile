@@ -1,19 +1,29 @@
 /**
- * Cliente de base de datos (Neon serverless + Drizzle).
- * Se usa en Server Components, Route Handlers y Server Actions.
+ * Cliente de base de datos (Drizzle).
+ *
+ * Producción: Neon serverless (HTTP).
+ * Demo / desarrollo local: Postgres estándar vía node-postgres, activado con
+ * `DEMO_MODE=1` (o `DB_DRIVER=node`). Esto permite levantar la app sin una
+ * cuenta de Neon, contra un Postgres local.
  *
  * Inicialización perezosa: NO conecta ni valida en tiempo de import, para que
  * `next build` no falle cuando DATABASE_URL aún no está disponible. La conexión
  * real ocurre en la primera consulta (siempre en rutas dinámicas / runtime).
  */
 import { neon } from "@neondatabase/serverless";
-import { drizzle, type NeonHttpDatabase } from "drizzle-orm/neon-http";
+import { drizzle as drizzleNeon, type NeonHttpDatabase } from "drizzle-orm/neon-http";
+import { drizzle as drizzleNode } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 
 import * as schema from "./schema";
 
 type DB = NeonHttpDatabase<typeof schema>;
 
 let _db: DB | null = null;
+
+function useNodeDriver(): boolean {
+  return process.env.DEMO_MODE === "1" || process.env.DB_DRIVER === "node";
+}
 
 function getDb(): DB {
   if (_db) return _db;
@@ -23,7 +33,18 @@ function getDb(): DB {
       "Falta DATABASE_URL. Configúrala en .env.local (Neon Postgres pooled).",
     );
   }
-  _db = drizzle(neon(connectionString), { schema, casing: "snake_case" });
+
+  if (useNodeDriver()) {
+    // Driver Postgres estándar para demo/local (no requiere Neon).
+    const pool = new Pool({ connectionString });
+    _db = drizzleNode(pool, {
+      schema,
+      casing: "snake_case",
+    }) as unknown as DB;
+    return _db;
+  }
+
+  _db = drizzleNeon(neon(connectionString), { schema, casing: "snake_case" });
   return _db;
 }
 
