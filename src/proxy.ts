@@ -2,7 +2,7 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 /**
- * Middleware de autenticación y autorización por rol.
+ * Proxy de autenticación y autorización por rol.
  * - /app/*   → requiere sesión (cualquier rol).
  * - /admin/* → requiere rol "admin".
  * Las rutas públicas (landing, clases, precios, etc.) quedan abiertas.
@@ -13,7 +13,7 @@ const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
 const DEMO = process.env.DEMO_MODE === "1";
 
 /** En modo demo no usamos Clerk: el rol vive en la cookie `demo_role`. */
-function demoMiddleware(req: NextRequest) {
+function demoProxy(req: NextRequest) {
   if (isAdminRoute(req)) {
     const role = req.cookies.get("demo_role")?.value;
     if (role !== "admin") {
@@ -23,7 +23,7 @@ function demoMiddleware(req: NextRequest) {
   return NextResponse.next();
 }
 
-const clerkAuthMiddleware = clerkMiddleware(async (auth, req) => {
+const clerkAuthProxy = clerkMiddleware(async (auth, req) => {
   const { userId, sessionClaims, redirectToSignIn } = await auth();
 
   if (isAppRoute(req) || isAdminRoute(req)) {
@@ -35,7 +35,6 @@ const clerkAuthMiddleware = clerkMiddleware(async (auth, req) => {
   if (isAdminRoute(req)) {
     const metadata = sessionClaims?.metadata as { role?: string } | undefined;
     if (metadata?.role !== "admin") {
-      // Sin permisos de admin: lo mandamos a su panel de alumno.
       return NextResponse.redirect(new URL("/app", req.url));
     }
   }
@@ -43,7 +42,7 @@ const clerkAuthMiddleware = clerkMiddleware(async (auth, req) => {
   return NextResponse.next();
 });
 
-export default DEMO ? demoMiddleware : clerkAuthMiddleware;
+export default DEMO ? demoProxy : clerkAuthProxy;
 
 export const config = {
   matcher: [
