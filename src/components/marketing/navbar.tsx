@@ -12,7 +12,7 @@ import { DemoRoleSwitcher } from "@/components/demo-role-switcher";
 import { APP_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-const DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === "1";
+const DEMO = !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 const links = [
   { href: "/clases", label: "Clases" },

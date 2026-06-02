@@ -7,7 +7,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { DemoAccountButton } from "@/components/demo-role-switcher";
 import { getOrSyncUser } from "@/lib/auth";
 
-const DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === "1";
+import { IS_DEMO as DEMO } from "@/lib/mode";
 
 export const dynamic = "force-dynamic";
 

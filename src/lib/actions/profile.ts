@@ -9,7 +9,7 @@ import { requireUser } from "@/lib/auth";
 import { profileInputSchema } from "@/lib/validations";
 import type { ActionResult } from "@/lib/actions/bookings";
 
-const DEMO_NO_DB = process.env.DEMO_MODE === "1" && !process.env.DATABASE_URL;
+import { DEMO_NO_DB } from "@/lib/mode";
 
 /** Actualiza el perfil local (teléfono, nombre) del alumno autenticado. */
 export async function updateProfile(

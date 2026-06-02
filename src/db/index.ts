@@ -22,14 +22,14 @@ type DB = NeonHttpDatabase<typeof schema>;
 let _db: DB | null = null;
 
 function useNodeDriver(): boolean {
-  return process.env.DEMO_MODE === "1" || process.env.DB_DRIVER === "node";
+  return !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || process.env.DB_DRIVER === "node";
 }
 
 function getDb(): DB {
   if (_db) return _db;
   const connectionString = process.env.DATABASE_URL;
   if (!connectionString) {
-    if (process.env.DEMO_MODE === "1") {
+    if (!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
       // Demo sin DB: devuelve proxy vacío; las queries nunca deben llegar aquí
       // porque queries.ts / auth.ts devuelven mock data antes.
       return new Proxy({} as DB, {

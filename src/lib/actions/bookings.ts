@@ -8,7 +8,7 @@ import { bookings, classSessions } from "@/db/schema";
 import { requireUser } from "@/lib/auth";
 import { bookingInputSchema } from "@/lib/validations";
 
-const DEMO_NO_DB = process.env.DEMO_MODE === "1" && !process.env.DATABASE_URL;
+import { DEMO_NO_DB } from "@/lib/mode";
 
 export interface ActionResult {
   ok: boolean;

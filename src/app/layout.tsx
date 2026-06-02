@@ -43,7 +43,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
 };
 
-const DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === "1";
+import { IS_DEMO as DEMO } from "@/lib/mode";
 
 export default function RootLayout({
   children,

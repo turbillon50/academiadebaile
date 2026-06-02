@@ -36,8 +36,7 @@ import {
   DEMO_MEMBERSHIP,
   DEMO_PAYMENTS,
 } from "@/lib/demo-data";
-
-const DEMO_NO_DB = process.env.DEMO_MODE === "1" && !process.env.DATABASE_URL;
+import { DEMO_NO_DB } from "@/lib/mode";
 
 export async function getActiveStyles() {
   if (DEMO_NO_DB) return DEMO_STYLES;
