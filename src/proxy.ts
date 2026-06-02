@@ -1,6 +1,8 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
+import { IS_DEMO as DEMO } from "@/lib/mode";
+
 /**
  * Proxy de autenticación y autorización por rol.
  * - /app/*   → requiere sesión (cualquier rol).
@@ -9,8 +11,6 @@ import { NextRequest, NextResponse } from "next/server";
  */
 const isAppRoute = createRouteMatcher(["/app(.*)"]);
 const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
-
-import { IS_DEMO as DEMO } from "@/lib/mode";
 
 /** En modo demo no usamos Clerk: el rol vive en la cookie `demo_role`. */
 function demoProxy(req: NextRequest) {
@@ -46,7 +46,6 @@ export default DEMO ? demoProxy : clerkAuthProxy;
 
 export const config = {
   matcher: [
-    // Excluye assets estáticos e internos de Next; incluye API.
     "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
     "/(api|trpc)(.*)",
   ],

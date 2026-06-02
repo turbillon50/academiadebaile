@@ -4,6 +4,7 @@ import { and, gte, lt } from "drizzle-orm";
 import { db } from "@/db";
 import { classSessions } from "@/db/schema";
 import { env } from "@/lib/env";
+import { DEMO_NO_DB } from "@/lib/mode";
 
 export const runtime = "nodejs";
 
@@ -23,6 +24,10 @@ export async function GET(req: Request): Promise<Response> {
 
   if (!authorized) {
     return NextResponse.json({ error: "No autorizado." }, { status: 401 });
+  }
+
+  if (DEMO_NO_DB) {
+    return NextResponse.json({ count: 0 });
   }
 
   const start = new Date();
