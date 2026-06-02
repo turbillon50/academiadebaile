@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { users, type UserRole } from "@/db/schema";
+import { DEMO_NO_DB } from "@/lib/mode";
 
 export const runtime = "nodejs";
 
@@ -13,6 +14,7 @@ export const runtime = "nodejs";
  * Configura el endpoint en el dashboard de Clerk y guarda CLERK_WEBHOOK_SECRET.
  */
 export async function POST(req: NextRequest): Promise<Response> {
+  if (DEMO_NO_DB) return NextResponse.json({ received: true });
   let evt;
   try {
     evt = await verifyWebhook(req);

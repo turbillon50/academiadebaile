@@ -4,11 +4,13 @@ import type Stripe from "stripe";
 import { env } from "@/lib/env";
 import { getStripe } from "@/lib/stripe";
 import { grantMembershipFromPayment } from "@/lib/membership";
+import { DEMO_NO_DB } from "@/lib/mode";
 
 // Stripe requiere el cuerpo crudo para verificar la firma.
 export const runtime = "nodejs";
 
 export async function POST(req: Request): Promise<Response> {
+  if (DEMO_NO_DB) return NextResponse.json({ received: true });
   const sig = req.headers.get("stripe-signature");
   if (!sig) {
     return NextResponse.json({ error: "Falta firma." }, { status: 400 });

@@ -3,6 +3,7 @@ import { Payment } from "mercadopago";
 
 import { getMercadoPagoClient } from "@/lib/mercadopago";
 import { grantMembershipFromPayment } from "@/lib/membership";
+import { DEMO_NO_DB } from "@/lib/mode";
 
 export const runtime = "nodejs";
 
@@ -14,6 +15,7 @@ export const runtime = "nodejs";
  * según la documentación de MP antes de procesar en producción de alto volumen.
  */
 export async function POST(req: Request): Promise<Response> {
+  if (DEMO_NO_DB) return NextResponse.json({ received: true });
   try {
     const body: unknown = await req.json().catch(() => ({}));
     const data = body as { type?: string; data?: { id?: string } };
