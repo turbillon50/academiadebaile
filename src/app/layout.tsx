@@ -43,24 +43,29 @@ export const viewport: Viewport = {
   maximumScale: 1,
 };
 
+const DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === "1";
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <ClerkProvider afterSignOutUrl="/">
-      <html lang="es-MX" suppressHydrationWarning>
-        <body className={`${geist.variable} font-sans antialiased`}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-            <Toaster />
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+  const tree = (
+    <html lang="es-MX" suppressHydrationWarning>
+      <body className={`${geist.variable} font-sans antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <Toaster />
+        </ThemeProvider>
+      </body>
+    </html>
   );
+
+  // En modo demo no cargamos Clerk (no requiere cuenta ni llaves reales).
+  if (DEMO) return tree;
+
+  return <ClerkProvider afterSignOutUrl="/">{tree}</ClerkProvider>;
 }

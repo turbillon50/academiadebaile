@@ -8,8 +8,11 @@ import { Show, SignInButton, UserButton } from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { DemoRoleSwitcher } from "@/components/demo-role-switcher";
 import { APP_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+
+const DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === "1";
 
 const links = [
   { href: "/clases", label: "Clases" },
@@ -49,22 +52,28 @@ export function Navbar() {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Show when="signed-out">
-            <SignInButton mode="modal">
-              <Button variant="ghost" size="sm" className="hidden sm:inline-flex">
-                Ingresar
-              </Button>
-            </SignInButton>
-            <Button asChild size="sm" className="hidden sm:inline-flex">
-              <Link href="/sign-up">Crear cuenta</Link>
-            </Button>
-          </Show>
-          <Show when="signed-in">
-            <Button asChild size="sm" variant="secondary" className="hidden sm:inline-flex">
-              <Link href="/app">Mi panel</Link>
-            </Button>
-            <UserButton />
-          </Show>
+          {DEMO ? (
+            <DemoRoleSwitcher />
+          ) : (
+            <>
+              <Show when="signed-out">
+                <SignInButton mode="modal">
+                  <Button variant="ghost" size="sm" className="hidden sm:inline-flex">
+                    Ingresar
+                  </Button>
+                </SignInButton>
+                <Button asChild size="sm" className="hidden sm:inline-flex">
+                  <Link href="/sign-up">Crear cuenta</Link>
+                </Button>
+              </Show>
+              <Show when="signed-in">
+                <Button asChild size="sm" variant="secondary" className="hidden sm:inline-flex">
+                  <Link href="/app">Mi panel</Link>
+                </Button>
+                <UserButton />
+              </Show>
+            </>
+          )}
           <Button
             variant="ghost"
             size="icon"
@@ -91,16 +100,24 @@ export function Navbar() {
               </Link>
             ))}
             <div className="mt-2 flex gap-2">
-              <Show when="signed-out">
+              {DEMO ? (
                 <Button asChild size="sm" className="flex-1">
-                  <Link href="/sign-up">Crear cuenta</Link>
+                  <Link href="/app">Entrar al demo</Link>
                 </Button>
-              </Show>
-              <Show when="signed-in">
-                <Button asChild size="sm" className="flex-1">
-                  <Link href="/app">Mi panel</Link>
-                </Button>
-              </Show>
+              ) : (
+                <>
+                  <Show when="signed-out">
+                    <Button asChild size="sm" className="flex-1">
+                      <Link href="/sign-up">Crear cuenta</Link>
+                    </Button>
+                  </Show>
+                  <Show when="signed-in">
+                    <Button asChild size="sm" className="flex-1">
+                      <Link href="/app">Mi panel</Link>
+                    </Button>
+                  </Show>
+                </>
+              )}
             </div>
           </nav>
         </div>

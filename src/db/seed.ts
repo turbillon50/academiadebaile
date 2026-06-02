@@ -4,20 +4,14 @@
  *
  * Idempotente: limpia las tablas de dominio antes de insertar.
  */
-import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
-
-import * as schema from "./schema";
+import { db, schema } from "./index";
 import { slugify } from "../lib/utils";
 
-const url = process.env.DATABASE_URL;
-if (!url) {
+if (!process.env.DATABASE_URL) {
   throw new Error(
     "Falta DATABASE_URL. Ejecuta con: tsx --env-file=.env.local src/db/seed.ts",
   );
 }
-
-const db = drizzle(neon(url), { schema, casing: "snake_case" });
 
 /** Próxima fecha (desde hoy) para un día de la semana dado, a cierta hora. */
 function nextOccurrence(weekdayIndex: number, hhmm: string, weeksAhead = 0): Date {

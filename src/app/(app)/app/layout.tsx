@@ -3,9 +3,15 @@ import { UserButton } from "@clerk/nextjs";
 
 import { AppBottomNav, AppSidebar } from "@/components/app/app-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
+import {
+  DemoAccountButton,
+  DemoRoleSwitcher,
+} from "@/components/demo-role-switcher";
 import { Badge } from "@/components/ui/badge";
 import { getOrSyncUser } from "@/lib/auth";
 import { APP_NAME } from "@/lib/constants";
+
+const DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === "1";
 
 export const dynamic = "force-dynamic";
 
@@ -33,7 +39,14 @@ export default async function AppLayout({
               </Link>
             ) : null}
             <ThemeToggle />
-            <UserButton />
+            {DEMO ? (
+              <>
+                <DemoRoleSwitcher />
+                <DemoAccountButton />
+              </>
+            ) : (
+              <UserButton />
+            )}
           </div>
         </div>
       </header>
