@@ -9,9 +9,11 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { users, type User, type UserRole } from "@/db/schema";
+import { DEMO_USER_ALUMNO, DEMO_USER_ADMIN } from "@/lib/demo-data";
 
 /** Modo demo: sin Clerk, el rol se toma de una cookie y se usa un usuario fijo. */
 const DEMO = process.env.DEMO_MODE === "1";
+const DEMO_NO_DB = DEMO && !process.env.DATABASE_URL;
 const DEMO_CLERK_ID = "demo-user";
 
 async function getDemoRole(): Promise<UserRole> {
@@ -76,6 +78,12 @@ export async function getOrSyncUser(): Promise<User | null> {
 /** Modo demo: crea/actualiza un usuario fijo cuyo rol viene de la cookie. */
 async function getOrCreateDemoUser(): Promise<User> {
   const role = await getDemoRole();
+
+  // Sin DB (Vercel sin credenciales) — devolvemos usuario estático directamente.
+  if (DEMO_NO_DB) {
+    return role === "admin" ? DEMO_USER_ADMIN : DEMO_USER_ALUMNO;
+  }
+
   const values = {
     clerkId: DEMO_CLERK_ID,
     email: "demo@academiadebaile.mx",

@@ -9,10 +9,13 @@ import { requireUser } from "@/lib/auth";
 import { profileInputSchema } from "@/lib/validations";
 import type { ActionResult } from "@/lib/actions/bookings";
 
+const DEMO_NO_DB = process.env.DEMO_MODE === "1" && !process.env.DATABASE_URL;
+
 /** Actualiza el perfil local (teléfono, nombre) del alumno autenticado. */
 export async function updateProfile(
   formData: FormData,
 ): Promise<ActionResult> {
+  if (DEMO_NO_DB) return { ok: true, message: "Perfil actualizado (demo)." };
   const user = await requireUser();
   const parsed = profileInputSchema.safeParse({
     firstName: formData.get("firstName") || undefined,

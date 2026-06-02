@@ -4,10 +4,21 @@ import { db } from "@/db";
 import { payments } from "@/db/schema";
 import { hasRole } from "@/lib/auth";
 
+const DEMO_NO_DB = process.env.DEMO_MODE === "1" && !process.env.DATABASE_URL;
+
 /** Exporta los pagos a CSV. Sólo admin. */
 export async function GET(): Promise<Response> {
   if (!(await hasRole("admin"))) {
     return new Response("No autorizado", { status: 403 });
+  }
+
+  if (DEMO_NO_DB) {
+    return new Response("fecha,alumno,email,concepto,monto_mxn,proveedor,estado,referencia\n", {
+      headers: {
+        "content-type": "text/csv; charset=utf-8",
+        "content-disposition": `attachment; filename="pagos-academiadebaile.csv"`,
+      },
+    });
   }
 
   const rows = await db.query.payments.findMany({

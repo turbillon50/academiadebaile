@@ -8,6 +8,8 @@ import { bookings } from "@/db/schema";
 import { hasRole } from "@/lib/auth";
 import type { ActionResult } from "@/lib/actions/bookings";
 
+const DEMO_NO_DB = process.env.DEMO_MODE === "1" && !process.env.DATABASE_URL;
+
 /** Marca asistencia (check-in) de una reserva. Sólo admin/instructor. */
 export async function checkInBooking(
   bookingId: string,
@@ -15,6 +17,7 @@ export async function checkInBooking(
   if (!(await hasRole("admin", "instructor"))) {
     return { ok: false, message: "No tienes permisos." };
   }
+  if (DEMO_NO_DB) return { ok: true, message: "Asistencia registrada (demo)." };
 
   const booking = await db.query.bookings.findFirst({
     where: eq(bookings.id, bookingId),
@@ -42,6 +45,7 @@ export async function markNoShow(bookingId: string): Promise<ActionResult> {
   if (!(await hasRole("admin", "instructor"))) {
     return { ok: false, message: "No tienes permisos." };
   }
+  if (DEMO_NO_DB) return { ok: true, message: "Marcado como no asistió (demo)." };
   await db
     .update(bookings)
     .set({ status: "no_show" })
