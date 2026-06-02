@@ -10,7 +10,7 @@ import { NextRequest, NextResponse } from "next/server";
 const isAppRoute = createRouteMatcher(["/app(.*)"]);
 const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
 
-const DEMO = process.env.DEMO_MODE === "1";
+import { IS_DEMO as DEMO } from "@/lib/mode";
 
 /** En modo demo no usamos Clerk: el rol vive en la cookie `demo_role`. */
 function demoProxy(req: NextRequest) {

@@ -21,7 +21,7 @@ import {
 } from "@/lib/validations";
 import type { ActionResult } from "@/lib/actions/bookings";
 
-const DEMO_NO_DB = process.env.DEMO_MODE === "1" && !process.env.DATABASE_URL;
+import { DEMO_NO_DB } from "@/lib/mode";
 
 async function ensureAdmin(): Promise<ActionResult | null> {
   if (!(await hasRole("admin"))) {

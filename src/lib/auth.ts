@@ -10,10 +10,8 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { users, type User, type UserRole } from "@/db/schema";
 import { DEMO_USER_ALUMNO, DEMO_USER_ADMIN } from "@/lib/demo-data";
+import { IS_DEMO as DEMO, DEMO_NO_DB } from "@/lib/mode";
 
-/** Modo demo: sin Clerk, el rol se toma de una cookie y se usa un usuario fijo. */
-const DEMO = process.env.DEMO_MODE === "1";
-const DEMO_NO_DB = DEMO && !process.env.DATABASE_URL;
 const DEMO_CLERK_ID = "demo-user";
 
 async function getDemoRole(): Promise<UserRole> {

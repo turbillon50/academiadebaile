@@ -8,7 +8,7 @@ import { bookings } from "@/db/schema";
 import { hasRole } from "@/lib/auth";
 import type { ActionResult } from "@/lib/actions/bookings";
 
-const DEMO_NO_DB = process.env.DEMO_MODE === "1" && !process.env.DATABASE_URL;
+import { DEMO_NO_DB } from "@/lib/mode";
 
 /** Marca asistencia (check-in) de una reserva. Sólo admin/instructor. */
 export async function checkInBooking(

@@ -8,7 +8,7 @@ import { env } from "@/lib/env";
 import { getStripe } from "@/lib/stripe";
 import { checkoutInputSchema } from "@/lib/validations";
 
-const DEMO_NO_DB = process.env.DEMO_MODE === "1" && !process.env.DATABASE_URL;
+import { DEMO_NO_DB } from "@/lib/mode";
 
 /** Crea una sesión de Stripe Checkout para comprar un plan de membresía. */
 export async function POST(req: Request): Promise<Response> {

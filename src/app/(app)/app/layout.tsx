@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { getOrSyncUser } from "@/lib/auth";
 import { APP_NAME } from "@/lib/constants";
 
-const DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === "1";
+import { IS_DEMO as DEMO } from "@/lib/mode";
 
 export const dynamic = "force-dynamic";
 
