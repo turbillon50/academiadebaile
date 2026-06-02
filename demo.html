@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>FDS Academy — Demo</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "on-tertiary-fixed-variant":"#00531a","surface-container":"#1e2020","surface-tint":"#aac7ff","surface-variant":"#333535","surface-container-highest":"#333535","primary":"#aac7ff","on-secondary-fixed-variant":"#332dbc","tertiary":"#47e266","on-secondary-container":"#b1b1ff","on-primary-container":"#002957","outline":"#8b91a0","surface-container-high":"#282a2b","secondary-fixed":"#e2dfff","tertiary-fixed":"#6cff82","surface-container-lowest":"#0c0f0f","surface-container-low":"#1a1c1c","on-secondary":"#1800a7","secondary-fixed-dim":"#c2c1ff","on-secondary-fixed":"#0c006b","background":"#121414","on-primary-fixed-variant":"#00468d","on-primary":"#003064","inverse-primary":"#005db8","surface":"#121414","on-primary-fixed":"#001b3e","tertiary-fixed-dim":"#47e266","inverse-surface":"#e2e2e2","primary-fixed":"#d6e3ff","on-tertiary-fixed":"#002106","on-tertiary-container":"#00320d","secondary":"#c2c1ff","on-surface-variant":"#c0c6d6","on-error":"#690005","on-tertiary":"#003910","error-container":"#93000a","primary-container":"#3e90ff","surface-dim":"#121414","surface-bright":"#37393a","on-surface":"#e2e2e2","on-background":"#e2e2e2","secondary-container":"#3630bf","primary-fixed-dim":"#aac7ff","outline-variant":"#414754","tertiary-container":"#00a73e","inverse-on-surface":"#2f3131","error":"#ffb4ab","on-error-container":"#ffdad6"
+      },
+      borderRadius: { DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px" },
+      spacing: { gutter:"12px","section-margin":"32px","container-margin":"20px","glass-padding":"20px","stack-gap":"16px" },
+      fontFamily: { "headline-xl":["Geist"],"headline-lg":["Geist"],"label-bold":["Geist"],"body-md":["Inter"],"status-pill":["Inter"],"headline-lg-mobile":["Geist"] },
+      fontSize: {
+        "headline-xl":["40px",{lineHeight:"48px",letterSpacing:"-0.02em",fontWeight:"800"}],
+        "headline-lg":["28px",{lineHeight:"34px",letterSpacing:"-0.01em",fontWeight:"700"}],
+        "label-bold":["14px",{lineHeight:"20px",letterSpacing:"0.05em",fontWeight:"600"}],
+        "body-md":["16px",{lineHeight:"24px",fontWeight:"400"}],
+        "status-pill":["12px",{lineHeight:"16px",fontWeight:"600"}],
+        "headline-lg-mobile":["24px",{lineHeight:"30px",fontWeight:"700"}]
+      }
+    }
+  }
+}
+</script>
+<style>
+  * { box-sizing: border-box; }
+  body { background:#000; color:#e2e2e2; font-family:'Inter',sans-serif; margin:0; overflow-x:hidden; -webkit-tap-highlight-color:transparent; }
+  .screen { display:none; min-height:100dvh; }
+  .screen.active { display:flex; flex-direction:column; }
+  .glass-card { background:rgba(255,255,255,0.04); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.1); border-top:1px solid rgba(255,255,255,0.15); }
+  .glass-surface { background:rgba(18,20,20,0.4); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.1); }
+  .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; font-family:'Material Symbols Outlined'; font-style:normal; }
+  .fill { font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24; }
+  ::-webkit-scrollbar { display:none; }
+  .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
+  .active-nav { color:#aac7ff; background:rgba(170,199,255,0.1); border-radius:0.75rem; }
+  .stage-gradient { background:radial-gradient(circle at center bottom,rgba(62,144,255,0.1) 0%,rgba(0,0,0,0) 70%); }
+  /* Demo nav pill */
+  #demo-pill { position:fixed; top:72px; right:12px; z-index:200; background:rgba(62,144,255,0.15); border:1px solid rgba(170,199,255,0.3); border-radius:9999px; padding:4px 12px; font-size:11px; font-weight:700; color:#aac7ff; backdrop-filter:blur(10px); display:flex; align-items:center; gap:6px; cursor:pointer; }
+  #demo-pill select { background:transparent; border:none; color:#aac7ff; font-size:11px; font-weight:700; outline:none; cursor:pointer; }
+  /* Toast */
+  .toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%); background:#aac7ff; color:#003064; padding:10px 20px; border-radius:9999px; font-weight:700; font-size:13px; z-index:300; animation:fadeInUp 0.3s ease; pointer-events:none; }
+  @keyframes fadeInUp { from{opacity:0;transform:translateX(-50%) translateY(10px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+</style>
+</head>
+<body>
+
+<!-- ──────────────────────────────────────────────
+  DEMO NAVIGATOR PILL
+────────────────────────────────────────────── -->
+<div id="demo-pill">
+  <span class="material-symbols-outlined" style="font-size:14px">tune</span>
+  <select id="screen-select" onchange="goTo(this.value)">
+    <option value="login">Login</option>
+    <option value="dashboard" selected>Dashboard</option>
+    <option value="classes">Mis Clases</option>
+    <option value="payments">Pagos</option>
+    <option value="events">Eventos</option>
+    <option value="notifications">Avisos</option>
+    <option value="profile">Perfil</option>
+    <option value="admin">Admin</option>
+  </select>
+</div>
+
+<!-- ══════════════════════════════════════════════
+  SCREEN: LOGIN
+══════════════════════════════════════════════ -->
+<div id="screen-login" class="screen active" style="align-items:center;justify-content:center;padding:20px;background:#000;">
+  <div class="fixed inset-0 pointer-events-none stage-gradient z-0"></div>
+  <main class="relative z-10 flex flex-col items-center w-full max-w-sm">
+    <div class="mb-8">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuYJPzP35UsuG_ZWlphLK2vb0fGqIImYMuwnVRnbWm6mghTVSwj49JgN9WUxM9B2PJZDoRYGov6mYj08-ynT3Fpf8qewXflVRUvF12d6iesT0iW7ELl5DqtqvKCeDKMveH9edstXezjU5bbnfqKgb2bc4ZnuyTiodmc2lGlr1BEn0rpv1lkLERfUNxz3KDWvH0O37RREIvLDH6AT157RiwzxM6xpSuwQM_EusYFMUzMUQe1YhuJYtwNTS43LufTSYAbB5ncbj4PH6e" alt="FDS Academy" class="w-28 h-28 object-contain" style="filter:drop-shadow(0 0 15px rgba(170,199,255,0.3))"/>
+    </div>
+    <div class="text-center mb-8">
+      <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">Bienvenido a la academia</h1>
+      <p class="font-body-md text-body-md text-on-surface-variant">Tu disciplina define tu movimiento.</p>
+    </div>
+    <div class="w-full glass-surface p-glass-padding rounded-xl">
+      <div class="space-y-4">
+        <div class="space-y-1">
+          <label class="font-label-bold text-label-bold text-on-surface-variant ml-1">Correo electrónico</label>
+          <input class="w-full bg-[#1C1C1E] border-none rounded-lg py-3 px-4 text-on-surface focus:ring-1 focus:ring-primary placeholder:text-outline-variant" placeholder="tu@correo.com" type="email"/>
+        </div>
+        <div class="space-y-1">
+          <label class="font-label-bold text-label-bold text-on-surface-variant ml-1">Contraseña</label>
+          <input class="w-full bg-[#1C1C1E] border-none rounded-lg py-3 px-4 text-on-surface focus:ring-1 focus:ring-primary placeholder:text-outline-variant" placeholder="••••••••" type="password"/>
+          <div class="flex justify-end pt-1">
+            <a class="font-label-bold text-[12px] text-primary" href="#">Olvidé mi contraseña</a>
+          </div>
+        </div>
+        <button onclick="goTo('dashboard')" class="w-full bg-primary-container text-on-primary-container font-label-bold text-label-bold py-4 rounded-full mt-2 shadow-lg transition-transform active:scale-95">
+          Iniciar sesión
+        </button>
+      </div>
+      <div class="relative flex items-center py-6">
+        <div class="flex-grow border-t border-outline-variant/30"></div>
+        <span class="flex-shrink mx-4 font-label-bold text-[12px] text-on-surface-variant">O continúa con</span>
+        <div class="flex-grow border-t border-outline-variant/30"></div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <button onclick="goTo('dashboard')" class="flex items-center justify-center gap-2 bg-[#1C1C1E] py-3 rounded-lg border border-white/5 transition-colors hover:bg-surface-container-high">
+          <svg class="w-5 h-5" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          <span class="font-label-bold text-label-bold text-on-surface">Google</span>
+        </button>
+        <button onclick="goTo('dashboard')" class="flex items-center justify-center gap-2 bg-[#1C1C1E] py-3 rounded-lg border border-white/5 transition-colors hover:bg-surface-container-high">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.88-3.12 1.87-2.39 5.91.71 7.15-.65 1.62-1.52 3.01-2.76 3.98zM12.03 7.25c-.02-2.23 1.76-4.07 3.9-4.25.3 2.51-2.04 4.46-3.9 4.25z"/></svg>
+          <span class="font-label-bold text-label-bold text-on-surface">Apple</span>
+        </button>
+      </div>
+    </div>
+    <p class="mt-8 font-body-md text-body-md text-on-surface-variant">¿No tienes cuenta? <a onclick="goTo('dashboard')" class="text-primary font-label-bold hover:underline ml-1 cursor-pointer">Regístrate</a></p>
+  </main>
+  <div class="fixed top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+  <div class="fixed bottom-0 left-0 w-80 h-80 bg-primary/5 rounded-full blur-[140px] translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+  SCREEN: DASHBOARD
+══════════════════════════════════════════════ -->
+<div id="screen-dashboard" class="screen" style="background:#000;padding-bottom:96px;">
+  <header class="sticky top-0 z-50 flex justify-between items-center px-5 h-16 backdrop-blur-xl bg-black/10 border-b border-white/10">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden border border-white/10">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDedETlFyI1KL5tH5x7Mq1_hR3ahSxJm1_ZblJL0tA1liY0T_4MHUXN6wI05fR93ItHA7nPhbsEyep8b-y0fBheyJ1QYCIcG-1bOXz9f9F76q2qCpZAjrzrdBj1BgVqcizULUOGjt-6O-WhIjK6AGtxmZnJmQTxBglMlN07nOrbe89IHkAwD2nkOf_9unw0dczAnkIfsMjhloYhb6WUOb6mrtvPLN86rU8SScokFzoQCVjke6L98p81aquwqOd3A5J3SOK9-mUeWAow" alt="FDS" class="w-full h-full object-cover"/>
+      </div>
+      <h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">FDS Academy</h1>
+    </div>
+    <button onclick="goTo('notifications')" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5">
+      <span class="material-symbols-outlined text-primary">notifications</span>
+    </button>
+  </header>
+  <main class="px-5 flex flex-col gap-8 mt-6">
+    <section>
+      <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Hola, Valeria! 👋</h2>
+      <p class="font-body-md text-on-surface-variant/60 mt-1">Lista para bailar hoy</p>
+    </section>
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="glass-card rounded-xl p-5 flex flex-col justify-between relative overflow-hidden group">
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <p class="font-label-bold text-on-surface-variant/70 uppercase">Estado de Pago</p>
+            <h3 class="font-headline-lg text-on-surface mt-1">Mensualidad Junio</h3>
+          </div>
+          <div class="bg-tertiary/20 text-tertiary px-3 py-1 rounded-full flex items-center gap-1">
+            <span class="material-symbols-outlined fill text-[16px]">check_circle</span>
+            <span class="font-status-pill text-status-pill">Pagado</span>
+          </div>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <span class="font-headline-xl text-on-surface" style="font-size:32px;font-weight:800">$850.00</span>
+          <span class="font-body-md text-on-surface-variant/50">MXN</span>
+        </div>
+        <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl"></div>
+      </div>
+      <div class="glass-card rounded-xl p-5 border-l-4 border-l-primary flex flex-col gap-4">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="font-label-bold text-primary uppercase">Próxima Clase</p>
+            <h3 class="font-headline-lg text-on-surface mt-1">Jazz Funk</h3>
+          </div>
+          <span class="material-symbols-outlined text-primary/40">schedule</span>
+        </div>
+        <div class="flex flex-col gap-2">
+          <div class="flex items-center gap-3 text-on-surface-variant">
+            <span class="material-symbols-outlined text-body-md">calendar_today</span>
+            <span class="font-body-md">Hoy, 18:00 - 19:30</span>
+          </div>
+          <div class="flex items-center gap-3 text-on-surface-variant">
+            <span class="material-symbols-outlined text-body-md">location_on</span>
+            <span class="font-body-md">Salón 2</span>
+          </div>
+        </div>
+        <button class="mt-2 w-full bg-primary text-on-primary py-3 rounded-full font-label-bold hover:opacity-90 transition-all active:scale-95">Ver detalles</button>
+      </div>
+    </section>
+    <section>
+      <h3 class="font-label-bold text-on-surface-variant/80 uppercase mb-4">Acciones rápidas</h3>
+      <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+        <button onclick="goTo('classes')" class="glass-card flex-none w-28 aspect-square rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-white/10 transition-all active:scale-95">
+          <span class="material-symbols-outlined text-primary text-3xl">calendar_month</span>
+          <span class="font-status-pill text-on-surface text-center">Horario</span>
+        </button>
+        <button onclick="goTo('payments')" class="glass-card flex-none w-28 aspect-square rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-white/10 transition-all active:scale-95">
+          <span class="material-symbols-outlined text-primary text-3xl">credit_card</span>
+          <span class="font-status-pill text-on-surface text-center">Pagar</span>
+        </button>
+        <button onclick="goTo('events')" class="glass-card flex-none w-28 aspect-square rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-white/10 transition-all active:scale-95">
+          <span class="material-symbols-outlined text-primary text-3xl">star</span>
+          <span class="font-status-pill text-on-surface text-center">Eventos</span>
+        </button>
+        <button onclick="goTo('notifications')" class="glass-card flex-none w-28 aspect-square rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-white/10 transition-all active:scale-95">
+          <span class="material-symbols-outlined text-primary text-3xl">history</span>
+          <span class="font-status-pill text-on-surface text-center">Historial</span>
+        </button>
+      </div>
+    </section>
+    <section>
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-label-bold text-on-surface-variant/80 uppercase">Anuncios recientes</h3>
+        <button class="text-primary font-label-bold text-sm">Ver más</button>
+      </div>
+      <div class="flex gap-4 overflow-x-auto no-scrollbar">
+        <div class="flex-none w-[280px] glass-card rounded-2xl overflow-hidden group">
+          <div class="h-32 bg-surface-container relative">
+            <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRi3dGqVH3cPCkBqnP0JifEx0h1zIb8DbFdKwkaaKHrepAyO0qqISrIozHUxp2vp4PrAD2FjqaIylfnDWEnmallh55XUcHzwGl9Mn-VaJ5IL8g03yHvP1mVVzXhG2dDFsHuLsUk1n4pzRRCFbhfXiF1mqoUkcONZ4bBNMJFiyERQqF7Dj3rfzjM22USb6zEVgMZM-Djhcc9w6ck7Pr7WWXyhRGDHiu5-Aww5ix_NGtv3wln2hDaZ8tLEHcQ5Fuvlk7aQocNH9ljFKs" alt="Hip Hop"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+          </div>
+          <div class="p-4">
+            <span class="font-status-pill text-primary bg-primary/10 px-2 py-0.5 rounded uppercase">Taller</span>
+            <h4 class="font-label-bold text-on-surface mt-2">Taller de Hip Hop</h4>
+            <div class="flex items-center gap-2 mt-1 text-on-surface-variant/60">
+              <span class="material-symbols-outlined text-sm">event</span>
+              <span class="font-status-pill">Sábado 22 de Junio</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex-none w-[280px] glass-card rounded-2xl overflow-hidden group">
+          <div class="h-32 bg-surface-container relative">
+            <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDw-NlC-DqlASk3ci_oWunSv6p1FdqGEi9zVd5QYcLfewSz7ZQN_C6PxkPILnG-oTVyWw6GC-7hKW9-qBmb-eg8vXA9JhK6idnmEnV4Gdf_j3cOmhXPAr1Jd29Px9y-BEHoz1b4mrdXfRXWNtlM2itOaWujr9Jov4Pg1UtPKAqt5r2zI5vJLMl8QOVUKRD2Yc2IrGHQPp_i6R_8bM-8iJezM7BjS25CPUTF-8TThGj-oXzGvxCZubrspzeZDozJMDGiiL6nM1YPtf83" alt="Contemporáneo"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+          </div>
+          <div class="p-4">
+            <span class="font-status-pill text-secondary bg-secondary/10 px-2 py-0.5 rounded uppercase">Gala</span>
+            <h4 class="font-label-bold text-on-surface mt-2">Presentación de Verano</h4>
+            <div class="flex items-center gap-2 mt-1 text-on-surface-variant/60">
+              <span class="material-symbols-outlined text-sm">location_on</span>
+              <span class="font-status-pill">Teatro de la Ciudad</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- Bottom Nav -->
+  <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 backdrop-blur-xl bg-black/10 border-t border-white/10 rounded-t-xl">
+    <button onclick="goTo('dashboard')" class="flex flex-col items-center justify-center p-2 active-nav transition-all"><span class="material-symbols-outlined fill">home</span><span class="font-label-bold text-[10px]">Home</span></button>
+    <button onclick="goTo('classes')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">school</span><span class="font-label-bold text-[10px]">Classes</span></button>
+    <button onclick="goTo('payments')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">payments</span><span class="font-label-bold text-[10px]">Payments</span></button>
+    <button onclick="goTo('events')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">event</span><span class="font-label-bold text-[10px]">Events</span></button>
+    <button onclick="goTo('profile')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">person</span><span class="font-label-bold text-[10px]">Profile</span></button>
+  </nav>
+</div>
+
+<!-- ══════════════════════════════════════════════
+  SCREEN: MIS CLASES
+══════════════════════════════════════════════ -->
+<div id="screen-classes" class="screen" style="background:#000;padding-bottom:96px;">
+  <header class="sticky top-0 z-50 flex justify-between items-center px-5 h-16 backdrop-blur-xl bg-black/10 border-b border-white/10">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyAx2zrZoffQBFno93ZhMOO9uv3nDvXH_muuL2RE8xO96m2fqqe6v0zbxPgLIvFOMnZXzn71-s_TNL2I_J2n-P_4QH7Kt32nekpyPhoaetCGgfJBppwYj4VjeRnhedMn5yol-LDgR_k8GP36fz-RppKVlqpW9jRBllDCL96bt0oF9gI2Ropzyc2TfeSz-Zh48vDuq7I2NP1aXDIX2SgjSoRGRjbaxFU5rBLmO0FbzMHjygP8rn7UTINZGz0EIUHgk9owHefNAuszBd" alt="" class="w-full h-full"/>
+      </div>
+      <h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">FDS Academy</h1>
+    </div>
+    <button onclick="goTo('notifications')" class="material-symbols-outlined text-primary hover:opacity-80">notifications</button>
+  </header>
+  <main class="px-5 mt-6 overflow-x-hidden">
+    <section class="mb-8">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Mis clases</h2>
+        <span class="text-primary font-label-bold text-label-bold">Junio 2024</span>
+      </div>
+      <div class="flex justify-between gap-2 pb-2">
+        <div class="flex flex-col items-center justify-center min-w-[44px] h-20 rounded-xl glass-card text-on-surface-variant/60"><span class="text-[10px] font-bold uppercase tracking-widest">Lun</span><span class="text-lg font-bold">10</span></div>
+        <div class="flex flex-col items-center justify-center min-w-[44px] h-20 rounded-xl bg-primary text-on-primary-container" style="box-shadow:0 0 20px rgba(170,199,255,0.3)"><span class="text-[10px] font-bold uppercase tracking-widest">Mar</span><span class="text-lg font-bold">11</span></div>
+        <div class="flex flex-col items-center justify-center min-w-[44px] h-20 rounded-xl glass-card text-on-surface-variant/60"><span class="text-[10px] font-bold uppercase tracking-widest">Mié</span><span class="text-lg font-bold">12</span></div>
+        <div class="flex flex-col items-center justify-center min-w-[44px] h-20 rounded-xl glass-card text-on-surface-variant/60"><span class="text-[10px] font-bold uppercase tracking-widest">Jue</span><span class="text-lg font-bold">13</span></div>
+        <div class="flex flex-col items-center justify-center min-w-[44px] h-20 rounded-xl glass-card text-on-surface-variant/60"><span class="text-[10px] font-bold uppercase tracking-widest">Vie</span><span class="text-lg font-bold">14</span></div>
+        <div class="flex flex-col items-center justify-center min-w-[44px] h-20 rounded-xl glass-card text-on-surface-variant/60"><span class="text-[10px] font-bold uppercase tracking-widest">Sáb</span><span class="text-lg font-bold">15</span></div>
+      </div>
+    </section>
+    <section class="mb-8">
+      <div class="flex gap-3 overflow-x-auto no-scrollbar">
+        <button class="px-5 py-2 rounded-full bg-primary text-on-primary-container font-label-bold text-label-bold whitespace-nowrap">Ballet</button>
+        <button class="px-5 py-2 rounded-full glass-card text-on-surface-variant font-label-bold text-label-bold whitespace-nowrap">Jazz</button>
+        <button class="px-5 py-2 rounded-full glass-card text-on-surface-variant font-label-bold text-label-bold whitespace-nowrap">Hip Hop</button>
+        <button class="px-5 py-2 rounded-full glass-card text-on-surface-variant font-label-bold text-label-bold whitespace-nowrap">Salsa</button>
+      </div>
+    </section>
+    <section class="mb-8">
+      <div class="flex flex-col gap-4">
+        <div class="glass-card p-5 rounded-2xl flex items-center gap-4">
+          <div class="w-14 h-14 rounded-xl bg-secondary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-secondary-container text-3xl">school</span></div>
+          <div class="flex-1">
+            <div class="flex justify-between items-start">
+              <h3 class="font-headline-lg-mobile text-headline-lg-mobile leading-none mb-1">Ballet</h3>
+              <span class="text-tertiary font-status-pill text-status-pill px-2 py-0.5 rounded-full border border-tertiary/30 bg-tertiary/10">Activo</span>
+            </div>
+            <p class="text-on-surface-variant text-sm flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 16:00 - 17:30</p>
+            <div class="flex justify-between mt-2"><p class="text-primary font-label-bold text-label-bold">Salón 1</p><p class="text-on-surface/60 text-xs">Prof. Ana</p></div>
+          </div>
+        </div>
+        <div class="glass-card p-5 rounded-2xl flex items-center gap-4">
+          <div class="w-14 h-14 rounded-xl bg-primary-container flex items-center justify-center"><span class="material-symbols-outlined text-on-primary-container text-3xl">directions_run</span></div>
+          <div class="flex-1">
+            <div class="flex justify-between items-start">
+              <h3 class="font-headline-lg-mobile text-headline-lg-mobile leading-none mb-1">Jazz Funk</h3>
+              <span class="text-tertiary font-status-pill text-status-pill px-2 py-0.5 rounded-full border border-tertiary/30 bg-tertiary/10">Activo</span>
+            </div>
+            <p class="text-on-surface-variant text-sm flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 18:00 - 19:30</p>
+            <div class="flex justify-between mt-2"><p class="text-primary font-label-bold text-label-bold">Salón 2</p><p class="text-on-surface/60 text-xs">Prof. Carlos</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="mb-8">
+      <h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-4">Historial de Asistencia</h2>
+      <div class="glass-card p-5 rounded-2xl">
+        <div class="flex justify-between items-end mb-6">
+          <div class="flex flex-col"><span class="text-on-surface-variant text-xs uppercase tracking-widest font-bold">Promedio Mensual</span><span class="text-3xl font-bold text-primary">94%</span></div>
+          <div class="flex items-baseline gap-1"><span class="material-symbols-outlined text-tertiary text-lg">trending_up</span><span class="text-tertiary text-sm font-bold">+2% este mes</span></div>
+        </div>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-tertiary"></div><span class="font-label-bold text-label-bold">Ballet</span></div><span class="text-on-surface-variant text-sm">08 Jun • Presente</span></div>
+          <div class="flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-tertiary"></div><span class="font-label-bold text-label-bold">Jazz Funk</span></div><span class="text-on-surface-variant text-sm">06 Jun • Presente</span></div>
+          <div class="flex items-center justify-between"><div class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-error"></div><span class="font-label-bold text-label-bold">Ballet</span></div><span class="text-on-surface-variant text-sm">01 Jun • Falta</span></div>
+        </div>
+        <button class="w-full mt-6 py-3 rounded-xl border border-primary/20 text-primary font-label-bold text-label-bold hover:bg-primary/5 transition-colors">Ver reporte detallado</button>
+      </div>
+    </section>
+  </main>
+  <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 backdrop-blur-xl bg-black/10 border-t border-white/10 rounded-t-xl">
+    <button onclick="goTo('dashboard')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">home</span><span class="font-label-bold text-[10px]">Home</span></button>
+    <button onclick="goTo('classes')" class="flex flex-col items-center justify-center p-2 active-nav transition-all"><span class="material-symbols-outlined fill">school</span><span class="font-label-bold text-[10px]">Classes</span></button>
+    <button onclick="goTo('payments')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">payments</span><span class="font-label-bold text-[10px]">Payments</span></button>
+    <button onclick="goTo('events')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">event</span><span class="font-label-bold text-[10px]">Events</span></button>
+    <button onclick="goTo('profile')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">person</span><span class="font-label-bold text-[10px]">Profile</span></button>
+  </nav>
+</div>
+
+<!-- ══════════════════════════════════════════════
+  SCREEN: PAGOS
+══════════════════════════════════════════════ -->
+<div id="screen-payments" class="screen" style="background:#000;padding-bottom:96px;">
+  <header class="sticky top-0 z-50 flex justify-between items-center px-5 h-16 backdrop-blur-xl bg-black/10 border-b border-white/10">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center overflow-hidden bg-surface-container">
+        <img class="w-8 h-8 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeYLdTYUeKJxVYKhdSaLJGkqVfZIGwCcTKaS8hoLNMdiPNr39GgQiDGVwAekRWhphGL7VA2CLc879g2iMeUWUccU_HQn3nn2hWmWXrG2TqXhzKEY_DT81MkOu6gClCE4TZKdijzIecVfMPy3Di-f8d23rlxNuPYxChAFFA10FVX2Cr9PqDZotLoCqinwuWBtr-vI52i41NE75xVgrZW_OuITYrB98amVxyRe6FmG33Q7Q17mDF3ST7JRfvc-O-XZdOCAEusdvscKUE" alt=""/>
+      </div>
+      <h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">FDS Academy</h1>
+    </div>
+    <button onclick="goTo('notifications')" class="w-10 h-10 flex items-center justify-center text-primary"><span class="material-symbols-outlined">notifications</span></button>
+  </header>
+  <main class="px-5 mt-6 max-w-2xl mx-auto space-y-8">
+    <section>
+      <div class="glass-card rounded-xl p-5 space-y-4 relative overflow-hidden">
+        <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl"></div>
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="font-label-bold text-label-bold text-on-surface-variant/70 uppercase tracking-widest">Saldo Actual</p>
+            <h2 class="text-white mt-1" style="font-size:40px;font-weight:800;line-height:1">$0.00</h2>
+          </div>
+          <div class="bg-tertiary/20 px-3 py-1 rounded-full flex items-center gap-1.5">
+            <span class="material-symbols-outlined fill text-[16px] text-tertiary">check_circle</span>
+            <span class="font-status-pill text-status-pill text-tertiary">Al corriente</span>
+          </div>
+        </div>
+        <div class="pt-4 border-t border-white/5 flex items-center justify-between">
+          <span class="text-[12px] text-on-surface-variant/50">Pagos protegidos</span>
+          <p class="text-[12px] text-on-surface-variant/50">Próximo: 01 Jul 2024</p>
+        </div>
+      </div>
+    </section>
+    <section>
+      <button onclick="showToast('¡Redirigiendo a Mercado Pago!')" class="w-full bg-primary-container text-on-primary-container font-label-bold text-label-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all">
+        <span class="material-symbols-outlined">payments</span> Pagar Mensualidad Julio
+      </button>
+    </section>
+    <section class="space-y-4">
+      <div class="flex justify-between items-end">
+        <h3 class="font-headline-lg-mobile text-headline-lg-mobile text-white">Historial de Pagos</h3>
+        <button class="font-label-bold text-label-bold text-primary">Ver todo</button>
+      </div>
+      <div class="space-y-3">
+        <div class="glass-card rounded-xl p-4 flex items-center justify-between hover:border-white/20 transition-colors">
+          <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center"><span class="material-symbols-outlined text-primary">calendar_today</span></div><div><p class="font-label-bold text-label-bold text-white">Junio 2024</p><p class="text-[12px] text-on-surface-variant/60">Pagado el 15 Jun 2024</p></div></div>
+          <div class="flex items-center gap-4"><div class="text-right"><p class="font-label-bold text-white">$850.00</p><p class="text-[10px] text-tertiary font-bold uppercase">Pagado</p></div><button onclick="showToast('Descargando recibo...')" class="w-8 h-8 rounded-full flex items-center justify-center bg-white/5 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-[20px]">download</span></button></div>
+        </div>
+        <div class="glass-card rounded-xl p-4 flex items-center justify-between hover:border-white/20 transition-colors">
+          <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center"><span class="material-symbols-outlined text-primary">calendar_today</span></div><div><p class="font-label-bold text-label-bold text-white">Mayo 2024</p><p class="text-[12px] text-on-surface-variant/60">Pagado el 12 May 2024</p></div></div>
+          <div class="flex items-center gap-4"><div class="text-right"><p class="font-label-bold text-white">$850.00</p><p class="text-[10px] text-tertiary font-bold uppercase">Pagado</p></div><button onclick="showToast('Descargando recibo...')" class="w-8 h-8 rounded-full flex items-center justify-center bg-white/5 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-[20px]">download</span></button></div>
+        </div>
+        <div class="glass-card rounded-xl p-4 flex items-center justify-between opacity-60">
+          <div class="flex items-center gap-4"><div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center"><span class="material-symbols-outlined text-primary">calendar_today</span></div><div><p class="font-label-bold text-label-bold text-white">Abril 2024</p><p class="text-[12px] text-on-surface-variant/60">Pagado el 09 Abr 2024</p></div></div>
+          <div class="flex items-center gap-4"><div class="text-right"><p class="font-label-bold text-white">$850.00</p><p class="text-[10px] text-tertiary font-bold uppercase">Pagado</p></div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 backdrop-blur-xl bg-black/10 border-t border-white/10 rounded-t-xl">
+    <button onclick="goTo('dashboard')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">home</span><span class="font-label-bold text-[10px]">Home</span></button>
+    <button onclick="goTo('classes')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">school</span><span class="font-label-bold text-[10px]">Classes</span></button>
+    <button onclick="goTo('payments')" class="flex flex-col items-center justify-center p-2 active-nav transition-all"><span class="material-symbols-outlined fill">payments</span><span class="font-label-bold text-[10px]">Payments</span></button>
+    <button onclick="goTo('events')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">event</span><span class="font-label-bold text-[10px]">Events</span></button>
+    <button onclick="goTo('profile')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">person</span><span class="font-label-bold text-[10px]">Profile</span></button>
+  </nav>
+</div>
+
+<!-- ══════════════════════════════════════════════
+  SCREEN: EVENTOS
+══════════════════════════════════════════════ -->
+<div id="screen-events" class="screen" style="background:#000;padding-bottom:120px;">
+  <header class="sticky top-0 z-50 flex justify-between items-center px-5 h-16 backdrop-blur-xl bg-black/10 border-b border-white/10">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full border border-primary/20 p-0.5 overflow-hidden flex items-center justify-center bg-black">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8KtbV7LAf5fgjMEwORpLqLR1ps01JxbnLAKl1KW3F-j1tV25rDMrepuP300NRfLUfPcoWb9QqIceX7QiN7GbtrBUA4BaD5yC-MmSj6xyq5dkNAyxh9zj3GLgfZyqVu_Qb0iGMzcqPshTeyV6lH1vyQ3EVzoEtjUY1aEdIv5mzJExrSjCI_vLrQVSK6lYHJLcSUrM6BwjcPPdFy7jyAWCSAuuQpVtxmPAzdjJL0XqDD9pa103FKqBTutvr4EkpdbGInO62o2fXrAgg" alt="" class="w-full h-full object-contain"/>
+      </div>
+      <h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">FDS Academy</h1>
+    </div>
+    <button onclick="goTo('notifications')" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5"><span class="material-symbols-outlined text-primary">notifications</span></button>
+  </header>
+  <main class="pt-6 pb-8 px-5">
+    <section class="mb-8">
+      <h2 class="font-headline-lg-mobile text-headline-lg-mobile mb-6">Próximos Eventos</h2>
+      <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+        <button class="px-6 py-2 rounded-full bg-primary text-on-primary font-label-bold text-label-bold whitespace-nowrap">Todos</button>
+        <button class="px-6 py-2 rounded-full border border-white/10 text-on-surface-variant font-label-bold text-label-bold whitespace-nowrap hover:bg-white/5">Workshops</button>
+        <button class="px-6 py-2 rounded-full border border-white/10 text-on-surface-variant font-label-bold text-label-bold whitespace-nowrap hover:bg-white/5">Competencias</button>
+        <button class="px-6 py-2 rounded-full border border-white/10 text-on-surface-variant font-label-bold text-label-bold whitespace-nowrap hover:bg-white/5">Presentaciones</button>
+      </div>
+    </section>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <article class="glass-card rounded-xl overflow-hidden group">
+        <div class="relative h-64 w-full">
+          <img class="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDO23_TCKC4GOppVaCcBpqo8n8qK6tY7i6oyR68S8TYmtKkmBmWxyCQ0ULjpOaFhPU3mKfZAw2R-6AE8nT9BWtWLmicuclQnbFOlc8eZBDdiOeumMSuCZ-oDpPRQDabPWw5603ziEK3ND9nbNd9MgqPI2j8H_NtohchjWkrTKKmRGfrLowfFk1H61RK8BPwn25Mc-fHJl366Pi43aXarQxmizlWlzPFK3BAejM8QXjGP259-VdEFk8SjYkx1-v_7rLY0O6_A6Yr9e8U" alt="Presentación"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+          <div class="absolute top-4 left-4"><span class="px-3 py-1 bg-primary-container/80 backdrop-blur-md rounded-full text-on-primary-container font-status-pill text-status-pill">PRESENTACIÓN</span></div>
+        </div>
+        <div class="p-5">
+          <h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">Presentación de Fin de Cursos</h3>
+          <div class="flex flex-col gap-2 mb-6">
+            <div class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-[18px]">location_on</span><span class="text-label-bold font-label-bold">Teatro de la Ciudad</span></div>
+            <div class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-[18px]">calendar_today</span><span class="text-label-bold font-label-bold">Domingo 30 de junio · 5:00 PM</span></div>
+          </div>
+          <button onclick="showToast('¡Inscripción exitosa!')" class="w-full py-4 rounded-full bg-primary text-on-primary font-label-bold text-label-bold hover:brightness-110 active:scale-95 transition-all">Ver detalles</button>
+        </div>
+      </article>
+      <article class="glass-card rounded-xl overflow-hidden group">
+        <div class="relative h-64 w-full">
+          <img class="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPU4prI_1J_6_-r5BvCK7UtJoz9QIg0qzGerjAan_-55OQ5KQ8HjNfbibk_pP6kwN1kEVNYL54J-mWrVMmjY6bmJb-bW092-nywrfulLvsFGKZ5cJea-9A7QnMKfQ32xQYyU2qG5LsB8Y9WBoL6jx8W9rRFZ8LVBsVJNd5e6p8mm4fkTJeucoPt-H8P2JnuMHa0_vNtdsGVcUKyazKEAg4bAIe1lXvEonGdMHgUfg-Yw3560FrNHEoZ0j9NrBBS67Dl2rH1cnF5W2V" alt="Hip Hop"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+          <div class="absolute top-4 left-4"><span class="px-3 py-1 bg-tertiary-container/80 backdrop-blur-md rounded-full text-on-tertiary-container font-status-pill text-status-pill">WORKSHOP</span></div>
+        </div>
+        <div class="p-5">
+          <h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-2">Taller de Hip Hop</h3>
+          <div class="flex flex-col gap-2 mb-6">
+            <div class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-[18px]">meeting_room</span><span class="text-label-bold font-label-bold">Salón 3 - FDS Academy</span></div>
+            <div class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-[18px]">calendar_today</span><span class="text-label-bold font-label-bold">Sábado 22 de junio · 11:00 AM</span></div>
+          </div>
+          <button onclick="showToast('¡Inscripción exitosa!')" class="w-full py-4 rounded-full border border-primary text-primary font-label-bold text-label-bold hover:bg-primary/5 active:scale-95 transition-all">Inscribirme</button>
+        </div>
+      </article>
+    </div>
+  </main>
+  <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 backdrop-blur-xl bg-black/10 border-t border-white/10 rounded-t-xl">
+    <button onclick="goTo('dashboard')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">home</span><span class="font-label-bold text-[10px]">Home</span></button>
+    <button onclick="goTo('classes')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">school</span><span class="font-label-bold text-[10px]">Classes</span></button>
+    <button onclick="goTo('payments')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">payments</span><span class="font-label-bold text-[10px]">Payments</span></button>
+    <button onclick="goTo('events')" class="flex flex-col items-center justify-center p-2 active-nav transition-all"><span class="material-symbols-outlined fill">event</span><span class="font-label-bold text-[10px]">Events</span></button>
+    <button onclick="goTo('profile')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">person</span><span class="font-label-bold text-[10px]">Profile</span></button>
+  </nav>
+</div>
+
+<!-- ══════════════════════════════════════════════
+  SCREEN: AVISOS
+══════════════════════════════════════════════ -->
+<div id="screen-notifications" class="screen" style="background:#000;padding-bottom:120px;">
+  <header class="sticky top-0 z-50 flex justify-between items-center px-5 h-16 backdrop-blur-xl bg-black/10 border-b border-white/10">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBpZqRVfR5yzUGpCQSmjhOtfpx8bqE5Rktagm90ZhSsQSrrqXOd6Tqa_YPE1kTpTRZwopYbFiV5_yxQR-hc9H_JaP_NXGP9DU9haVVE6x5tqf7SLq5rBBAPBXQPx-hPi69QKc8Khv9B46CReLqXN4dhg_tuW_R2pFvZOsFH5Y9JrD_yWkGxpUEpPX2W-c3rkajFuK8XwgAEKgd30Zn78Yo9isyH1g-6Atm3F1d3TAStbc9lPr382o--rF629Dz3nyIbpVSSD_9d" alt="" class="w-full h-full object-cover"/>
+      </div>
+      <h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">Avisos</h1>
+    </div>
+  </header>
+  <main class="pt-6 px-5 space-y-4">
+    <div class="flex justify-between items-end mb-4">
+      <p class="text-on-surface-variant/60 font-label-bold text-label-bold uppercase tracking-widest">Recientes</p>
+      <button onclick="showToast('Todos los avisos marcados como leídos')" class="text-primary font-label-bold text-label-bold hover:opacity-80">Marcar todas como leídas</button>
+    </div>
+    <div class="space-y-4">
+      <div class="glass-card rounded-xl p-5 flex gap-4 items-start relative overflow-hidden">
+        <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary flex-shrink-0"><span class="material-symbols-outlined">credit_card</span></div>
+        <div class="flex-1"><div class="flex justify-between items-start"><h3 class="font-label-bold text-label-bold text-white mb-1">Recordatorio de pago</h3><span class="text-[10px] text-on-surface-variant/40 font-status-pill">HACE 2H</span></div><p class="text-on-surface-variant text-sm leading-relaxed">Tu mensualidad vence pronto. Evita recargos realizando tu pago antes del 15 de junio.</p></div>
+        <div class="absolute right-0 top-0 h-full w-1 bg-primary"></div>
+      </div>
+      <div class="glass-card rounded-xl p-5 flex gap-4 items-start relative overflow-hidden">
+        <div class="w-12 h-12 rounded-full bg-tertiary/10 flex items-center justify-center text-tertiary flex-shrink-0"><span class="material-symbols-outlined">schedule</span></div>
+        <div class="flex-1"><div class="flex justify-between items-start"><h3 class="font-label-bold text-label-bold text-white mb-1">Cambio de horario</h3><span class="text-[10px] text-on-surface-variant/40 font-status-pill">AYER</span></div><p class="text-on-surface-variant text-sm leading-relaxed">La clase de Ballet del viernes se recorre 30 min por ensayo general. ¡Te esperamos!</p></div>
+      </div>
+      <div class="glass-card rounded-xl p-5 flex gap-4 items-start relative overflow-hidden">
+        <div class="w-12 h-12 rounded-full bg-secondary-container/20 flex items-center justify-center text-secondary flex-shrink-0"><span class="material-symbols-outlined">campaign</span></div>
+        <div class="flex-1"><div class="flex justify-between items-start"><h3 class="font-label-bold text-label-bold text-white mb-1">Nuevo evento</h3><span class="text-[10px] text-on-surface-variant/40 font-status-pill">2 DÍAS</span></div><p class="text-on-surface-variant text-sm leading-relaxed">Inscripciones abiertas para la competencia regional. ¡Demuestra tu talento en el escenario!</p></div>
+      </div>
+      <div class="opacity-60 glass-card rounded-xl p-5 flex gap-4 items-start relative overflow-hidden">
+        <div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant flex-shrink-0"><span class="material-symbols-outlined">check_circle</span></div>
+        <div class="flex-1"><div class="flex justify-between items-start"><h3 class="font-label-bold text-label-bold text-white mb-1">Pago exitoso</h3><span class="text-[10px] text-on-surface-variant/40 font-status-pill">5 DÍAS</span></div><p class="text-on-surface-variant text-sm leading-relaxed">Hemos recibido tu pago de la mensualidad de Mayo. ¡Gracias!</p></div>
+      </div>
+    </div>
+  </main>
+  <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 backdrop-blur-xl bg-black/10 border-t border-white/10 rounded-t-xl">
+    <button onclick="goTo('dashboard')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">home</span><span class="font-label-bold text-[10px]">Home</span></button>
+    <button onclick="goTo('classes')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">school</span><span class="font-label-bold text-[10px]">Classes</span></button>
+    <button onclick="goTo('payments')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">payments</span><span class="font-label-bold text-[10px]">Payments</span></button>
+    <button onclick="goTo('events')" class="flex flex-col items-center justify-center p-2 active-nav transition-all"><span class="material-symbols-outlined fill">event</span><span class="font-label-bold text-[10px]">Events</span></button>
+    <button onclick="goTo('profile')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">person</span><span class="font-label-bold text-[10px]">Profile</span></button>
+  </nav>
+</div>
+
+<!-- ══════════════════════════════════════════════
+  SCREEN: PERFIL
+══════════════════════════════════════════════ -->
+<div id="screen-profile" class="screen" style="background:#000;padding-bottom:96px;">
+  <header class="sticky top-0 z-50 flex justify-between items-center px-5 h-16 backdrop-blur-xl bg-black/10 border-b border-white/10">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center overflow-hidden"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJfnWDrs6qNThGv7HQi8SzN4IhaXsFHuVDrA3vVzG-i6JA0fgWxu_7CEPErVv_xg2-AV7FG6XKlgLNE-JO5nQOv88CH2MiYc9OTPRCpFoxlpVOMruyXmwzhjsQLwSBjsIDT65lQzu9qcYY6nYgtBaqk5RTm8ctnx7xbLYQliF82lqPGyoMC0a5gKEk3H9KDXlvxs3eZMmgPLvyT6XhiYxaCuROFEFB7vBBV9EiBK5wAWqgawD_KdWssA6Zx02WiE8r-3AXU5Xa1MUv" alt="" class="w-full h-full object-cover"/></div>
+      <h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">FDS Academy</h1>
+    </div>
+    <button onclick="goTo('notifications')" class="text-primary material-symbols-outlined">notifications</button>
+  </header>
+  <main class="pt-6 px-5">
+    <section class="flex flex-col items-center mb-8">
+      <div class="relative mb-4">
+        <div class="w-28 h-28 rounded-full p-1 bg-gradient-to-tr from-primary to-secondary">
+          <img class="w-full h-full rounded-full object-cover border-4 border-black" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIx2Qsn8ocJuOS0YDTYdU8BJxzaEWY7eYBYRWIfC12g-Yl9gIrvdDQcKty3euBb40vRao1zRApy0C9nT0MjCI98edGW_vQS4rqiZK9gLKkN0UEfRTm4FLSlgVNef8n3y-MRvsOcOTpgi8nYCmvwuX1ofoCTr-ePh3b-iXG-HyjjbgYluINf3LyM-8FgAqIumjMMYP5ASE2hFEPf31PaQj7pyLNKuML86-TkJn3c-Nr8JR6Ru6dhQx9E3xWEC0vr-h-SMrRGNcN1xRD" alt="Valeria"/>
+        </div>
+        <button class="absolute bottom-1 right-1 w-8 h-8 rounded-full bg-primary text-on-primary-container flex items-center justify-center border-2 border-black"><span class="material-symbols-outlined text-[18px]">photo_camera</span></button>
+      </div>
+      <h2 class="font-headline-lg text-headline-lg text-white">Valeria Martínez</h2>
+      <p class="font-label-bold text-label-bold text-primary tracking-widest">ALUMNA</p>
+    </section>
+    <section class="grid grid-cols-2 gap-4 mb-8">
+      <div class="glass-card rounded-xl p-5 flex flex-col items-center justify-center text-center"><span class="font-headline-lg-mobile text-headline-lg-mobile text-primary">Intermedio</span><span class="font-label-bold text-label-bold text-on-surface-variant/60">NIVEL DE DANZA</span></div>
+      <div class="glass-card rounded-xl p-5 flex flex-col items-center justify-center text-center"><span class="font-headline-lg-mobile text-headline-lg-mobile text-tertiary">12</span><span class="font-label-bold text-label-bold text-on-surface-variant/60">CLASES ESTE MES</span></div>
+    </section>
+    <section class="space-y-4 mb-8">
+      <h3 class="font-label-bold text-label-bold text-on-surface-variant px-1">CONFIGURACIÓN DE CUENTA</h3>
+      <div class="glass-card rounded-xl overflow-hidden divide-y divide-white/10">
+        <button class="w-full flex items-center justify-between p-5 hover:bg-white/5 transition-colors"><div class="flex items-center gap-4"><span class="material-symbols-outlined text-primary">person</span><span class="font-body-md text-body-md">Información Personal</span></div><span class="material-symbols-outlined text-on-surface-variant/40">chevron_right</span></button>
+        <button class="w-full flex items-center justify-between p-5 hover:bg-white/5 transition-colors"><div class="flex items-center gap-4"><span class="material-symbols-outlined text-primary">contact_emergency</span><span class="font-body-md text-body-md">Contacto de Emergencia</span></div><span class="material-symbols-outlined text-on-surface-variant/40">chevron_right</span></button>
+        <button class="w-full flex items-center justify-between p-5 hover:bg-white/5 transition-colors"><div class="flex items-center gap-4"><span class="material-symbols-outlined text-primary">lock</span><span class="font-body-md text-body-md">Cambiar Contraseña</span></div><span class="material-symbols-outlined text-on-surface-variant/40">chevron_right</span></button>
+      </div>
+    </section>
+    <button onclick="goTo('login')" class="w-full flex items-center justify-center gap-3 py-4 text-error font-label-bold text-label-bold rounded-xl border border-error/20 bg-error/5 hover:bg-error/10 transition-all active:scale-95 mb-8">
+      <span class="material-symbols-outlined">logout</span> Cerrar sesión
+    </button>
+  </main>
+  <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 backdrop-blur-xl bg-black/10 border-t border-white/10 rounded-t-xl">
+    <button onclick="goTo('dashboard')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">home</span><span class="font-label-bold text-[10px]">Home</span></button>
+    <button onclick="goTo('classes')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">school</span><span class="font-label-bold text-[10px]">Classes</span></button>
+    <button onclick="goTo('payments')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">payments</span><span class="font-label-bold text-[10px]">Payments</span></button>
+    <button onclick="goTo('events')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">event</span><span class="font-label-bold text-[10px]">Events</span></button>
+    <button onclick="goTo('profile')" class="flex flex-col items-center justify-center p-2 active-nav transition-all"><span class="material-symbols-outlined fill">person</span><span class="font-label-bold text-[10px]">Profile</span></button>
+  </nav>
+</div>
+
+<!-- ══════════════════════════════════════════════
+  SCREEN: ADMIN
+══════════════════════════════════════════════ -->
+<div id="screen-admin" class="screen" style="background:#000;padding-bottom:96px;">
+  <header class="sticky top-0 z-50 flex justify-between items-center px-5 h-16 backdrop-blur-xl bg-black/10 border-b border-white/10">
+    <div class="flex items-center gap-3">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAMpOTx2b5iewou8Uid0XD1qyfGJUk8UgHlYbqn5tHBoFTJ-fUc1b-3vcU9qwakh7ijqpvXFyg7IQDOt0KXfFQkGNs_bvcomFiF-3wZsDKC9hxgVW-F23UhPYPqEQpyZSlTPSIQG_NZ2wp7PfiFW2QN5AfLfpvI41BL4zcxpfUNFbvqbVRI77Fwmay3v575v1662ej1fkATwwHp7I-d7aMVSyb8fa-h9CYi0PRRFojYIU3FflQ8n1dw-ju9y7NT7HuGd7wtQrQQGvn" alt="" class="w-8 h-8 rounded-full border border-primary/30"/>
+      <h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">FDS Academy</h1>
+    </div>
+    <div class="flex items-center gap-4">
+      <button class="material-symbols-outlined text-primary">notifications</button>
+      <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary/40"><span class="material-symbols-outlined text-sm text-primary">person</span></div>
+    </div>
+  </header>
+  <main class="pt-6 pb-8 px-5 max-w-7xl mx-auto">
+    <section class="mb-8">
+      <h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Panel Administrativo</h2>
+      <p class="text-on-surface-variant opacity-70">Resumen operativo y métricas en tiempo real.</p>
+    </section>
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="glass-card rounded-xl p-5 flex flex-col justify-between aspect-square md:aspect-auto"><div><span class="material-symbols-outlined fill text-primary mb-2">group</span><p class="text-label-bold font-label-bold text-on-surface-variant uppercase tracking-wider">Alumnos</p></div><div><h3 class="font-headline-lg text-headline-lg">128</h3><span class="text-status-pill font-status-pill text-tertiary bg-tertiary/10 px-2 py-0.5 rounded-full">Activos</span></div></div>
+      <div class="glass-card rounded-xl p-5 flex flex-col justify-between aspect-square md:aspect-auto"><div><span class="material-symbols-outlined fill text-tertiary mb-2">payments</span><p class="text-label-bold font-label-bold text-on-surface-variant uppercase tracking-wider">Ingresos</p></div><div><h3 class="font-headline-lg text-headline-lg">$68,000</h3><p class="text-status-pill font-status-pill text-on-surface-variant">MXN este mes</p></div></div>
+      <div class="glass-card rounded-xl p-5 flex flex-col justify-between aspect-square md:aspect-auto"><div><span class="material-symbols-outlined fill text-error mb-2">credit_card_off</span><p class="text-label-bold font-label-bold text-on-surface-variant uppercase tracking-wider">Adeudos</p></div><div><h3 class="font-headline-lg text-headline-lg">15</h3><span class="text-status-pill font-status-pill text-yellow-400 bg-yellow-400/10 px-2 py-0.5 rounded-full">Pendientes</span></div></div>
+      <div class="glass-card rounded-xl p-5 flex flex-col justify-between aspect-square md:aspect-auto"><div><span class="material-symbols-outlined fill text-secondary mb-2">calendar_month</span><p class="text-label-bold font-label-bold text-on-surface-variant uppercase tracking-wider">Eventos</p></div><div><h3 class="font-headline-lg text-headline-lg">3</h3><span class="text-status-pill font-status-pill text-primary bg-primary/10 px-2 py-0.5 rounded-full">Programados</span></div></div>
+    </section>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <h3 class="col-span-full font-label-bold text-label-bold text-on-surface mb-2">Gestión de Academia</h3>
+        <button onclick="showToast('Gestión de Alumnos')" class="glass-card rounded-xl p-6 flex items-center justify-between group"><div class="flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center"><span class="material-symbols-outlined text-primary">diversity_3</span></div><div><h4 class="font-label-bold text-on-surface text-left">Gestión de Alumnos</h4><p class="text-xs text-on-surface-variant text-left">Directorio y perfiles</p></div></div><span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span></button>
+        <button onclick="showToast('Control de Pagos')" class="glass-card rounded-xl p-6 flex items-center justify-between group"><div class="flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-tertiary/10 flex items-center justify-center"><span class="material-symbols-outlined text-tertiary">request_quote</span></div><div><h4 class="font-label-bold text-on-surface text-left">Control de Pagos</h4><p class="text-xs text-on-surface-variant text-left">Mensualidades y becas</p></div></div><span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span></button>
+        <button onclick="showToast('Asistencias')" class="glass-card rounded-xl p-6 flex items-center justify-between group"><div class="flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center"><span class="material-symbols-outlined text-secondary">check_circle</span></div><div><h4 class="font-label-bold text-on-surface text-left">Asistencias</h4><p class="text-xs text-on-surface-variant text-left">Pase de lista diario</p></div></div><span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span></button>
+        <button onclick="showToast('Calendario de Eventos')" class="glass-card rounded-xl p-6 flex items-center justify-between group"><div class="flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center"><span class="material-symbols-outlined text-green-400">event_available</span></div><div><h4 class="font-label-bold text-on-surface text-left">Calendario de Eventos</h4><p class="text-xs text-on-surface-variant text-left">Clases magistrales y shows</p></div></div><span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span></button>
+      </div>
+      <div class="space-y-4">
+        <h3 class="font-label-bold text-label-bold text-on-surface mb-2">Acciones Rápidas</h3>
+        <button onclick="showToast('Aviso enviado a 128 alumnos')" class="w-full bg-primary-container text-on-primary-container font-label-bold text-label-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity active:scale-95">
+          <span class="material-symbols-outlined">campaign</span> Enviar aviso masivo
+        </button>
+        <div class="glass-card rounded-xl overflow-hidden">
+          <div class="p-5 border-b border-white/5"><h4 class="font-label-bold text-label-bold text-on-surface">Actividad Reciente</h4></div>
+          <div class="p-5 space-y-4">
+            <div class="flex items-start gap-3"><div class="w-2 h-2 rounded-full bg-tertiary mt-2"></div><div><p class="text-sm text-on-surface">Pago registrado: <span class="font-bold">Valeria M.</span></p><p class="text-xs text-on-surface-variant">Hace 15 min</p></div></div>
+            <div class="flex items-start gap-3"><div class="w-2 h-2 rounded-full bg-primary mt-2"></div><div><p class="text-sm text-on-surface">Nuevo alumno inscrito</p><p class="text-xs text-on-surface-variant">Hace 2 horas</p></div></div>
+            <div class="flex items-start gap-3"><div class="w-2 h-2 rounded-full bg-yellow-400 mt-2"></div><div><p class="text-sm text-on-surface">Evento editado: <span class="font-bold">Workshop Heels</span></p><p class="text-xs text-on-surface-variant">Hace 5 horas</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <section class="mt-8 glass-card rounded-2xl overflow-hidden relative min-h-[200px] flex items-center p-8 group">
+      <div class="absolute inset-0 z-0">
+        <img class="w-full h-full object-cover opacity-30 group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAK8sQKTS7200xUBLrtNqhQ3JyE5vofC0WLo4S3tJKxkNi9G3VRwLHBAYy4O64FSRW6gsp1kzKeCfpwauLILAf_KW-sUHiHsY1kZrvhUVOeuj00OrW9Y6wJ7A1a5y0ZBBEs6rmQWkpKSS8uoaByZJVhcBYw8GCtB2NX4x_uSMazQsz24SJoN9pA7BQXrhKAiO-msNQo_gLL35eZcXEg4vH1NU6qlv1_7SpItiDGsxS2GbMfaYyEpFneUDy7nAAK__sqaigZmZXUEA8c" alt="Studio"/>
+        <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
+      </div>
+      <div class="relative z-10 max-w-md">
+        <h3 class="font-headline-lg text-headline-lg mb-2 text-primary">El Escenario es Tuyo</h3>
+        <p class="text-on-surface-variant mb-6">Administra el talento, el ritmo y el crecimiento de la academia más prestigiosa del país.</p>
+        <div class="flex gap-4">
+          <button onclick="showToast('Reportes completos')" class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-bold text-label-bold hover:brightness-110">Reportes Full</button>
+          <button onclick="showToast('Configuración del sistema')" class="border border-white/20 text-on-surface px-6 py-2 rounded-full font-label-bold text-label-bold backdrop-blur-md hover:bg-white/10 transition-colors">Configuración</button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 backdrop-blur-xl bg-black/10 border-t border-white/10 md:hidden">
+    <button onclick="goTo('admin')" class="flex flex-col items-center justify-center p-2 active-nav transition-all"><span class="material-symbols-outlined fill">dashboard</span><span class="font-label-bold text-[10px]">Dashboard</span></button>
+    <button onclick="showToast('Gestión de Alumnos')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">group</span><span class="font-label-bold text-[10px]">Alumnos</span></button>
+    <button onclick="goTo('payments')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">payments</span><span class="font-label-bold text-[10px]">Pagos</span></button>
+    <button onclick="goTo('events')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">event_note</span><span class="font-label-bold text-[10px]">Eventos</span></button>
+    <button onclick="goTo('dashboard')" class="flex flex-col items-center justify-center text-on-surface-variant/40 p-2 hover:text-primary/80 transition-all"><span class="material-symbols-outlined">more_horiz</span><span class="font-label-bold text-[10px]">Más</span></button>
+  </nav>
+</div>
+
+<!-- ══════════════════════════════════════════════
+  JAVASCRIPT
+══════════════════════════════════════════════ -->
+<script>
+const screenMap = {
+  login: 'screen-login',
+  dashboard: 'screen-dashboard',
+  classes: 'screen-classes',
+  payments: 'screen-payments',
+  events: 'screen-events',
+  notifications: 'screen-notifications',
+  profile: 'screen-profile',
+  admin: 'screen-admin',
+};
+
+function goTo(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById(screenMap[name]);
+  if (target) { target.classList.add('active'); window.scrollTo(0,0); }
+  const sel = document.getElementById('screen-select');
+  if (sel) sel.value = name;
+  // Hide pill on login
+  const pill = document.getElementById('demo-pill');
+  if (pill) pill.style.display = name === 'login' ? 'none' : 'flex';
+}
+
+function showToast(msg) {
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+// Start at dashboard
+goTo('dashboard');
+</script>
+</body>
+</html>
