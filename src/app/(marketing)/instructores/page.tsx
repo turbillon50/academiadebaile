@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Instructores",
-  description: "Conoce al equipo de instructores de Academia de Baile.",
+  description: "Conoce al equipo de instructores de FDS Academy.",
 };
 
 export default async function InstructoresPage() {

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Instagram, MapPin, Phone } from "lucide-react";
 
+import { FdsLogo } from "@/components/fds-logo";
 import { APP_NAME, APP_TAGLINE } from "@/lib/constants";
 
 export function Footer() {
@@ -9,10 +10,7 @@ export function Footer() {
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-2 md:grid-cols-4">
         <div className="space-y-3">
           <div className="flex items-center gap-2 font-display text-lg font-extrabold">
-            <span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground">
-              AB
-            </span>
-            {APP_NAME}
+            <FdsLogo />
           </div>
           <p className="text-sm text-muted-foreground">{APP_TAGLINE}</p>
         </div>
@@ -41,12 +39,12 @@ export function Footer() {
             <Phone className="size-4" /> 55 1234 5678
           </p>
           <p className="flex items-center gap-2 text-muted-foreground">
-            <Instagram className="size-4" /> @academiadebaile
+            <Instagram className="size-4" /> @fdsacademy
           </p>
         </div>
       </div>
       <div className="border-t border-border/60 py-4 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} {APP_NAME}. Hecho con ritmo en México.
+        © {new Date().getFullYear()} {APP_NAME}. Entrena tu ritmo en México.
       </div>
     </footer>
   );

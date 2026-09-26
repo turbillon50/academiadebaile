@@ -26,7 +26,7 @@ export function SessionCard({
   session: SessionCardData;
   action?: React.ReactNode;
 }) {
-  const accent = session.class.style.accentColor ?? "#e11d48";
+  const accent = session.class.style.accentColor ?? "#9bbdff";
   const available = session.available;
   return (
     <Card className="overflow-hidden transition-transform hover:-translate-y-0.5">

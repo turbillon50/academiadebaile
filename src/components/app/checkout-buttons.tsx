@@ -8,7 +8,13 @@ import { Button } from "@/components/ui/button";
 
 type Provider = "stripe" | "mercadopago";
 
-export function CheckoutButtons({ planId }: { planId: string }) {
+export function CheckoutButtons({
+  planId,
+  mercadoPagoOnly = false,
+}: {
+  planId: string;
+  mercadoPagoOnly?: boolean;
+}) {
   const [loading, setLoading] = useState<Provider | null>(null);
 
   async function checkout(provider: Provider) {
@@ -34,24 +40,26 @@ export function CheckoutButtons({ planId }: { planId: string }) {
   return (
     <div className="flex flex-col gap-2">
       <Button
-        onClick={() => checkout("stripe")}
-        loading={loading === "stripe"}
-        disabled={loading !== null}
-        className="w-full"
-      >
-        {loading !== "stripe" ? <CreditCard className="size-4" /> : null}
-        Pagar con tarjeta
-      </Button>
-      <Button
         onClick={() => checkout("mercadopago")}
         loading={loading === "mercadopago"}
         disabled={loading !== null}
-        variant="outline"
         className="w-full"
       >
         {loading !== "mercadopago" ? <Wallet className="size-4" /> : null}
         Pagar con Mercado Pago
       </Button>
+      {mercadoPagoOnly ? null : (
+        <Button
+          onClick={() => checkout("stripe")}
+          loading={loading === "stripe"}
+          disabled={loading !== null}
+          variant="outline"
+          className="w-full"
+        >
+          {loading !== "stripe" ? <CreditCard className="size-4" /> : null}
+          Pagar con tarjeta
+        </Button>
+      )}
     </div>
   );
 }

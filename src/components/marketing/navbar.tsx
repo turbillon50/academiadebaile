@@ -7,6 +7,7 @@ import { Menu, X } from "lucide-react";
 import { Show, SignInButton, UserButton } from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";
+import { FdsLogo } from "@/components/fds-logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { DemoRoleSwitcher } from "@/components/demo-role-switcher";
 import { APP_NAME } from "@/lib/constants";
@@ -29,9 +30,7 @@ export function Navbar() {
     <header className="sticky top-0 z-40 w-full border-b border-border/60 glass">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2 font-display text-lg font-extrabold">
-          <span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground">
-            AB
-          </span>
+          <FdsLogo showName={false} />
           <span className="hidden sm:inline">{APP_NAME}</span>
         </Link>
 

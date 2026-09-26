@@ -1,5 +1,5 @@
 /**
- * Esquema de base de datos — Academia de Baile
+ * Esquema de base de datos — FDS Academy
  * --------------------------------------------------------------------------
  * Modela el dominio completo: estilos, niveles, clases, horarios recurrentes,
  * sesiones, instructores, alumnos, reservas, asistencia, membresías/paquetes,
@@ -123,7 +123,7 @@ export const styles = pgTable("styles", {
   description: text("description"),
   imageUrl: text("image_url"),
   // Color de acento para la UI (hex). Da personalidad por estilo.
-  accentColor: varchar("accent_color", { length: 9 }).default("#e11d48"),
+  accentColor: varchar("accent_color", { length: 9 }).default("#3e90ff"),
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()

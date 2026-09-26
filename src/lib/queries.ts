@@ -179,10 +179,15 @@ export async function getUserPayments(userId: string) {
 // Admin — KPIs
 // ---------------------------------------------------------------------------
 export async function getAdminKpis() {
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
   const [
     activeStudents,
     upcomingSessionsCount,
     revenueRow,
+    monthlyRevenueRow,
+    pendingPaymentsRow,
+    upcomingEventsRow,
     attendanceRows,
   ] = await Promise.all([
     db
@@ -192,11 +197,28 @@ export async function getAdminKpis() {
     db
       .select({ value: count() })
       .from(classSessions)
-      .where(gte(classSessions.startsAt, new Date())),
+      .where(gte(classSessions.startsAt, now)),
     db
       .select({ value: sql<number>`coalesce(sum(${payments.amountCents}), 0)` })
       .from(payments)
       .where(eq(payments.status, "pagado")),
+    db
+      .select({ value: sql<number>`coalesce(sum(${payments.amountCents}), 0)` })
+      .from(payments)
+      .where(and(eq(payments.status, "pagado"), gte(payments.createdAt, monthStart))),
+    db
+      .select({ value: count() })
+      .from(payments)
+      .where(eq(payments.status, "pendiente")),
+    db
+      .select({ value: count() })
+      .from(events)
+      .where(
+        and(
+          gte(events.startsAt, now),
+          inArray(events.status, ["publicado", "agotado"]),
+        ),
+      ),
     db
       .select({ status: bookings.status, value: count() })
       .from(bookings)
@@ -216,6 +238,9 @@ export async function getAdminKpis() {
     activeStudents: Number(activeStudents[0]?.value ?? 0),
     upcomingSessions: Number(upcomingSessionsCount[0]?.value ?? 0),
     revenueCents: Number(revenueRow[0]?.value ?? 0),
+    monthlyRevenueCents: Number(monthlyRevenueRow[0]?.value ?? 0),
+    pendingPayments: Number(pendingPaymentsRow[0]?.value ?? 0),
+    upcomingEvents: Number(upcomingEventsRow[0]?.value ?? 0),
     attendanceRate,
   };
 }

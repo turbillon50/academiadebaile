@@ -59,7 +59,7 @@ export async function upsertStyle(
     name: data.name,
     slug: slugify(data.name),
     description: data.description ?? null,
-    accentColor: data.accentColor ?? "#e11d48",
+    accentColor: data.accentColor ?? "#3e90ff",
     imageUrl: data.imageUrl || null,
     isActive: data.isActive,
   };

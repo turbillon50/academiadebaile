@@ -2,76 +2,72 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/*
- * Academia de Baile — sistema de diseño
- * Paleta con personalidad: magenta/rosa eléctrico sobre lienzos neutros,
- * inspirada en el calor del baile latino. Soporta light + dark.
- */
+/* FDS Academy — Electric Kinetic design system. */
 :root {
-  --radius: 0.75rem;
+  --radius: 0.625rem;
 
-  --background: oklch(0.99 0.004 320);
-  --foreground: oklch(0.18 0.02 320);
+  --background: oklch(0.99 0 0);
+  --foreground: oklch(0.12 0.01 250);
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.02 320);
+  --card-foreground: oklch(0.12 0.01 250);
 
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.02 320);
+  --popover-foreground: oklch(0.12 0.01 250);
 
-  --primary: oklch(0.58 0.24 5);
-  --primary-foreground: oklch(0.99 0.01 320);
+  --primary: oklch(0.68 0.18 255);
+  --primary-foreground: oklch(0.18 0.08 255);
 
-  --secondary: oklch(0.96 0.02 320);
-  --secondary-foreground: oklch(0.28 0.05 320);
+  --secondary: oklch(0.95 0.03 270);
+  --secondary-foreground: oklch(0.24 0.08 270);
 
-  --muted: oklch(0.96 0.01 320);
-  --muted-foreground: oklch(0.52 0.03 320);
+  --muted: oklch(0.95 0.005 250);
+  --muted-foreground: oklch(0.48 0.02 250);
 
-  --accent: oklch(0.94 0.05 330);
-  --accent-foreground: oklch(0.28 0.08 330);
+  --accent: oklch(0.93 0.05 255);
+  --accent-foreground: oklch(0.25 0.09 255);
 
-  --destructive: oklch(0.58 0.22 25);
-  --destructive-foreground: oklch(0.99 0.01 320);
+  --destructive: oklch(0.62 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
 
-  --success: oklch(0.65 0.17 150);
-  --success-foreground: oklch(0.99 0.01 150);
+  --success: oklch(0.76 0.22 145);
+  --success-foreground: oklch(0.14 0.04 145);
 
-  --warning: oklch(0.78 0.16 75);
-  --warning-foreground: oklch(0.25 0.06 75);
+  --warning: oklch(0.82 0.16 80);
+  --warning-foreground: oklch(0.2 0.04 80);
 
-  --border: oklch(0.91 0.01 320);
-  --input: oklch(0.91 0.01 320);
-  --ring: oklch(0.58 0.24 5);
+  --border: oklch(0.87 0.01 250);
+  --input: oklch(0.87 0.01 250);
+  --ring: oklch(0.68 0.18 255);
 
-  --chart-1: oklch(0.58 0.24 5);
-  --chart-2: oklch(0.6 0.18 300);
-  --chart-3: oklch(0.7 0.16 75);
-  --chart-4: oklch(0.65 0.17 150);
-  --chart-5: oklch(0.6 0.15 230);
+  --chart-1: oklch(0.68 0.18 255);
+  --chart-2: oklch(0.66 0.16 280);
+  --chart-3: oklch(0.76 0.22 145);
+  --chart-4: oklch(0.82 0.16 80);
+  --chart-5: oklch(0.7 0.16 210);
 }
 
 .dark {
-  --background: oklch(0.16 0.012 320);
-  --foreground: oklch(0.96 0.008 320);
+  --background: oklch(0 0 0);
+  --foreground: oklch(0.91 0.01 250);
 
-  --card: oklch(0.2 0.015 320);
-  --card-foreground: oklch(0.96 0.008 320);
+  --card: oklch(0.15 0.005 250 / 0.72);
+  --card-foreground: oklch(0.91 0.01 250);
 
-  --popover: oklch(0.2 0.015 320);
-  --popover-foreground: oklch(0.96 0.008 320);
+  --popover: oklch(0.18 0.005 250 / 0.92);
+  --popover-foreground: oklch(0.91 0.01 250);
 
-  --primary: oklch(0.68 0.23 5);
-  --primary-foreground: oklch(0.16 0.02 320);
+  --primary: oklch(0.78 0.13 255);
+  --primary-foreground: oklch(0.2 0.08 255);
 
-  --secondary: oklch(0.26 0.02 320);
-  --secondary-foreground: oklch(0.96 0.008 320);
+  --secondary: oklch(0.28 0.05 270);
+  --secondary-foreground: oklch(0.84 0.07 270);
 
-  --muted: oklch(0.26 0.02 320);
-  --muted-foreground: oklch(0.7 0.02 320);
+  --muted: oklch(0.21 0.005 250);
+  --muted-foreground: oklch(0.72 0.03 250);
 
-  --accent: oklch(0.32 0.06 330);
-  --accent-foreground: oklch(0.96 0.01 330);
+  --accent: oklch(0.26 0.08 255);
+  --accent-foreground: oklch(0.9 0.06 255);
 
   --destructive: oklch(0.62 0.2 25);
   --destructive-foreground: oklch(0.98 0.01 320);
@@ -82,15 +78,15 @@
   --warning: oklch(0.8 0.15 75);
   --warning-foreground: oklch(0.2 0.05 75);
 
-  --border: oklch(0.3 0.02 320);
-  --input: oklch(0.32 0.02 320);
-  --ring: oklch(0.68 0.23 5);
+  --border: oklch(1 0 0 / 0.12);
+  --input: oklch(1 0 0 / 0.14);
+  --ring: oklch(0.78 0.13 255);
 
-  --chart-1: oklch(0.68 0.23 5);
-  --chart-2: oklch(0.66 0.18 300);
-  --chart-3: oklch(0.76 0.16 75);
-  --chart-4: oklch(0.7 0.17 150);
-  --chart-5: oklch(0.66 0.15 230);
+  --chart-1: oklch(0.78 0.13 255);
+  --chart-2: oklch(0.68 0.15 280);
+  --chart-3: oklch(0.76 0.22 145);
+  --chart-4: oklch(0.82 0.16 80);
+  --chart-5: oklch(0.7 0.16 210);
 }
 
 @theme inline {
@@ -128,8 +124,8 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-display), var(--font-geist-sans), sans-serif;
+  --font-sans: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -152,7 +148,7 @@
   background: linear-gradient(
     135deg,
     var(--primary),
-    oklch(0.65 0.2 320)
+    oklch(0.68 0.16 280)
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -160,9 +156,15 @@
 }
 
 .glass {
-  background: color-mix(in oklch, var(--card) 70%, transparent);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: color-mix(in oklch, var(--card) 78%, transparent);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.electric-glow {
+  box-shadow:
+    0 0 0 1px color-mix(in oklch, var(--primary) 22%, transparent),
+    0 0 36px color-mix(in oklch, var(--primary) 14%, transparent);
 }
 
 @keyframes shimmer {

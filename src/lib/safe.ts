@@ -7,7 +7,11 @@ export async function safe<T>(promise: Promise<T>, fallback: T): Promise<T> {
     return await promise;
   } catch (err) {
     // TODO(observabilidad): registrar en logger estructurado / Sentry.
-    if (process.env.NODE_ENV !== "production") {
+    const message = err instanceof Error ? err.message : "";
+    if (
+      process.env.NODE_ENV !== "production" &&
+      !message.includes("Falta DATABASE_URL")
+    ) {
       console.error("[safe] consulta falló:", err);
     }
     return fallback;

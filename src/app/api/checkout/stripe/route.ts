@@ -42,8 +42,8 @@ export async function POST(req: Request): Promise<Response> {
       // Referencias para reconciliar en el webhook.
       client_reference_id: user.id,
       metadata: { userId: user.id, planId: plan.id },
-      success_url: `${env.appUrl}/app/membresia?pago=exito`,
-      cancel_url: `${env.appUrl}/app/membresia?pago=cancelado`,
+      success_url: `${env.appUrl}/app/pagos?pago=exito`,
+      cancel_url: `${env.appUrl}/app/pagos?pago=cancelado`,
     });
 
     return NextResponse.json({ url: session.url });

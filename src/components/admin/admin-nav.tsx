@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  Bell,
   CalendarRange,
+  CircleDollarSign,
   GraduationCap,
   LayoutDashboard,
-  Music,
   PartyPopper,
   QrCode,
+  Receipt,
   Settings,
   Users,
 } from "lucide-react";
@@ -16,12 +18,14 @@ import {
 import { cn } from "@/lib/utils";
 
 const items = [
-  { href: "/admin", label: "Resumen", icon: LayoutDashboard },
-  { href: "/admin/clases", label: "Clases", icon: CalendarRange },
-  { href: "/admin/instructores", label: "Instructores", icon: Users },
-  { href: "/admin/estilos", label: "Estilos", icon: Music },
-  { href: "/admin/eventos", label: "Eventos", icon: PartyPopper },
+  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/alumnos", label: "Alumnos", icon: GraduationCap },
+  { href: "/admin/pagos", label: "Pagos", icon: Receipt },
+  { href: "/admin/adeudos", label: "Adeudos", icon: CircleDollarSign },
+  { href: "/admin/clases", label: "Clases / Horarios", icon: CalendarRange },
+  { href: "/admin/eventos", label: "Eventos", icon: PartyPopper },
+  { href: "/admin/avisos", label: "Avisos", icon: Bell },
+  { href: "/admin/instructores", label: "Instructores", icon: Users },
   { href: "/admin/check-in", label: "Check-in", icon: QrCode },
   { href: "/admin/reportes", label: "Reportes", icon: Settings },
 ] as const;

@@ -4,9 +4,8 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { membershipPlans } from "@/db/schema";
 import { requireUser } from "@/lib/auth";
-import { env } from "@/lib/env";
-import { getMercadoPagoPreference } from "@/lib/mercadopago";
 import { checkoutInputSchema } from "@/lib/validations";
+import { createMercadoPagoCheckoutUrl } from "@/services/payments";
 
 /** Crea una preferencia de Mercado Pago (Checkout Pro) para un plan. */
 export async function POST(req: Request): Promise<Response> {
@@ -25,32 +24,15 @@ export async function POST(req: Request): Promise<Response> {
       return NextResponse.json({ error: "Plan no encontrado." }, { status: 404 });
     }
 
-    const preference = getMercadoPagoPreference();
-    const result = await preference.create({
-      body: {
-        items: [
-          {
-            id: plan.id,
-            title: plan.name,
-            quantity: 1,
-            unit_price: plan.priceCents / 100,
-            currency_id: "MXN",
-          },
-        ],
-        payer: { email: user.email },
-        // Referencia para reconciliar en el webhook: userId|planId.
-        external_reference: `${user.id}|${plan.id}`,
-        back_urls: {
-          success: `${env.appUrl}/app/membresia?pago=exito`,
-          failure: `${env.appUrl}/app/membresia?pago=cancelado`,
-          pending: `${env.appUrl}/app/membresia?pago=pendiente`,
-        },
-        auto_return: "approved",
-        notification_url: `${env.appUrl}/api/webhooks/mercadopago`,
-      },
+    const url = await createMercadoPagoCheckoutUrl({
+      userId: user.id,
+      userEmail: user.email,
+      planId: plan.id,
+      planName: plan.name,
+      amountCents: plan.priceCents,
     });
 
-    return NextResponse.json({ url: result.init_point });
+    return NextResponse.json({ url });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Error desconocido";
     return NextResponse.json({ error: message }, { status: 500 });

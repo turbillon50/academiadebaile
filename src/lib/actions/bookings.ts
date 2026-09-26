@@ -79,6 +79,7 @@ export async function reserveSession(sessionId: string): Promise<ActionResult> {
   revalidatePath("/app");
   revalidatePath("/app/reservar");
   revalidatePath("/app/reservas");
+  revalidatePath("/app/clases");
   return { ok: true, message: "¡Reserva confirmada! Te esperamos en la pista." };
 }
 
@@ -110,6 +111,7 @@ export async function cancelBooking(bookingId: string): Promise<ActionResult> {
     .where(eq(bookings.id, booking.id));
 
   revalidatePath("/app/reservas");
+  revalidatePath("/app/clases");
   revalidatePath("/app");
   return { ok: true, message: "Reserva cancelada." };
 }

@@ -49,9 +49,9 @@ export function slugify(input: string): string {
 
 /** Iniciales para avatares (máx 2 caracteres). */
 export function initials(name: string | null | undefined): string {
-  if (!name) return "AB";
+  if (!name) return "FDS";
   const parts = name.trim().split(/\s+/);
   const first = parts[0]?.[0] ?? "";
   const second = parts[1]?.[0] ?? "";
-  return (first + second).toUpperCase() || "AB";
+  return (first + second).toUpperCase() || "FDS";
 }

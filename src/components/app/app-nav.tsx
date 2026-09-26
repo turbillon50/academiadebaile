@@ -2,15 +2,23 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarPlus, CreditCard, LayoutDashboard, Ticket, User } from "lucide-react";
+import {
+  Bell,
+  CalendarDays,
+  CreditCard,
+  LayoutDashboard,
+  PartyPopper,
+  User,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
 const items = [
   { href: "/app", label: "Inicio", icon: LayoutDashboard },
-  { href: "/app/reservar", label: "Reservar", icon: CalendarPlus },
-  { href: "/app/reservas", label: "Reservas", icon: Ticket },
-  { href: "/app/membresia", label: "Membresía", icon: CreditCard },
+  { href: "/app/clases", label: "Clases", icon: CalendarDays },
+  { href: "/app/pagos", label: "Pagos", icon: CreditCard },
+  { href: "/app/eventos", label: "Eventos", icon: PartyPopper },
+  { href: "/app/avisos", label: "Avisos", icon: Bell },
   { href: "/app/perfil", label: "Perfil", icon: User },
 ] as const;
 
@@ -44,13 +52,13 @@ export function AppSidebar() {
 export function AppBottomNav() {
   const pathname = usePathname();
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t border-border/60 glass md:hidden">
+    <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-6 border-t border-border/60 glass md:hidden">
       {items.map((item) => (
         <Link
           key={item.href}
           href={item.href}
           className={cn(
-            "flex flex-col items-center gap-1 py-2.5 text-[11px] font-medium transition-colors",
+            "flex min-w-0 flex-col items-center gap-1 py-2.5 text-[10px] font-medium transition-colors",
             isActive(pathname, item.href)
               ? "text-primary"
               : "text-muted-foreground",

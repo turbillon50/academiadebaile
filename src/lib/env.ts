@@ -33,7 +33,7 @@ export const env = {
     return required("RESEND_API_KEY");
   },
   resendFrom:
-    process.env.RESEND_FROM_EMAIL ?? "Academia de Baile <onboarding@resend.dev>",
+    process.env.RESEND_FROM_EMAIL ?? "FDS Academy <onboarding@resend.dev>",
   clerkWebhookSecret: optional("CLERK_WEBHOOK_SECRET"),
   n8nReminderWebhookUrl: optional("N8N_REMINDER_WEBHOOK_URL"),
   n8nWebhookSecret: optional("N8N_WEBHOOK_SECRET"),

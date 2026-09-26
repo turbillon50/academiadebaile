@@ -1,7 +1,15 @@
 /** Constantes de dominio compartidas entre UI y lógica. */
 
-export const APP_NAME = "Academia de Baile";
-export const APP_TAGLINE = "Donde el ritmo se vuelve movimiento";
+export const APP_NAME = "FDS Academy";
+export const APP_TAGLINE = "Entrena tu ritmo. Domina el escenario";
+
+export const ROLE_LABELS: Record<string, string> = {
+  alumno: "Alumno",
+  padre: "Padre/Tutor",
+  tutor: "Padre/Tutor",
+  instructor: "Instructor",
+  admin: "Administrador",
+};
 
 export const LEVEL_LABELS: Record<string, string> = {
   principiante: "Principiante",

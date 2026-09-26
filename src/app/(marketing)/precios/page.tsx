@@ -85,7 +85,7 @@ export default async function PreciosPage() {
                     className="mt-6 w-full"
                     variant={featured ? "default" : "outline"}
                   >
-                    <Link href="/app/membresia">Elegir plan</Link>
+                    <Link href="/app/pagos">Elegir plan</Link>
                   </Button>
                 </CardContent>
               </Card>

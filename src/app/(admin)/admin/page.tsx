@@ -1,8 +1,11 @@
 import Link from "next/link";
 import {
+  AlertTriangle,
+  Bell,
   CalendarRange,
   Download,
   Percent,
+  Receipt,
   TrendingUp,
   Users,
 } from "lucide-react";
@@ -48,20 +51,68 @@ export default async function AdminDashboard() {
         />
         <StatCard
           icon={CalendarRange}
-          label="Sesiones próximas"
-          value={kpis.upcomingSessions}
+          label="Eventos próximos"
+          value={kpis.upcomingEvents}
         />
         <StatCard
           icon={TrendingUp}
-          label="Ingresos cobrados"
-          value={formatCurrency(kpis.revenueCents)}
+          label="Ingresos mensuales"
+          value={formatCurrency(kpis.monthlyRevenueCents)}
+        />
+        <StatCard
+          icon={AlertTriangle}
+          label="Adeudos pendientes"
+          value={kpis.pendingPayments}
+        />
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <StatCard
+          icon={Receipt}
+          label="Pagos del mes"
+          value={formatCurrency(kpis.monthlyRevenueCents)}
+        />
+        <StatCard
+          icon={CalendarRange}
+          label="Clases próximas"
+          value={kpis.upcomingSessions}
         />
         <StatCard
           icon={Percent}
-          label="% Asistencia"
+          label="Asistencia"
           value={`${kpis.attendanceRate}%`}
         />
+        <StatCard
+          icon={TrendingUp}
+          label="Ingresos totales"
+          value={formatCurrency(kpis.revenueCents)}
+        />
       </div>
+
+      <section>
+        <h2 className="mb-4 font-display text-xl font-bold">Gestión de academia</h2>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { href: "/admin/alumnos", label: "Alumnos", icon: Users },
+            { href: "/admin/pagos", label: "Pagos", icon: Receipt },
+            { href: "/admin/adeudos", label: "Adeudos", icon: AlertTriangle },
+            { href: "/admin/clases", label: "Clases / Horarios", icon: CalendarRange },
+            { href: "/admin/eventos", label: "Eventos", icon: CalendarRange },
+            { href: "/admin/avisos", label: "Avisos masivos", icon: Bell },
+            { href: "/admin/instructores", label: "Instructores", icon: Users },
+            { href: "/admin/reportes", label: "Reportes", icon: TrendingUp },
+          ].map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="rounded-xl border bg-card p-4 transition-transform hover:-translate-y-0.5"
+            >
+              <item.icon className="mb-3 size-5 text-primary" />
+              <p className="font-semibold">{item.label}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       <Card>
         <CardHeader>
@@ -104,21 +155,24 @@ export default async function AdminDashboard() {
         </CardContent>
       </Card>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardContent className="p-5">
-            <p className="text-sm text-muted-foreground">Accesos rápidos</p>
-            <div className="mt-3 flex flex-col gap-2">
-              <Button asChild variant="secondary" size="sm">
-                <Link href="/admin/clases">Gestionar clases</Link>
-              </Button>
-              <Button asChild variant="secondary" size="sm">
-                <Link href="/admin/check-in">Check-in de hoy</Link>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      <Card className="border-primary/20">
+        <CardContent className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="font-semibold">Acciones rápidas</p>
+            <p className="text-sm text-muted-foreground">
+              Check-in operativo y avisos masivos para el día.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Button asChild variant="secondary" size="sm">
+              <Link href="/admin/check-in">Check-in de hoy</Link>
+            </Button>
+            <Button asChild size="sm">
+              <Link href="/admin/avisos">Enviar aviso masivo</Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

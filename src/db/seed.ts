@@ -1,5 +1,5 @@
 /**
- * Seed de datos plausibles para Academia de Baile.
+ * Seed de datos plausibles para FDS Academy.
  * Ejecutar: `npm run db:seed` (requiere DATABASE_URL en el entorno).
  *
  * Idempotente: limpia las tablas de dominio antes de insertar.
@@ -46,12 +46,12 @@ async function main(): Promise<void> {
 
   console.log("🎵 Estilos...");
   const styleData = [
-    { name: "Salsa", accentColor: "#e11d48", desc: "Sabor, giros y conexión en pareja al ritmo del Caribe." },
-    { name: "Bachata", accentColor: "#db2777", desc: "Sensualidad y musicalidad dominicana paso a paso." },
-    { name: "Cumbia", accentColor: "#f59e0b", desc: "El ritmo que une a toda Latinoamérica en la pista." },
-    { name: "Hip Hop", accentColor: "#8b5cf6", desc: "Cultura urbana, groove y actitud." },
-    { name: "Jazz", accentColor: "#06b6d4", desc: "Técnica, líneas y expresión escénica." },
-    { name: "Contemporáneo", accentColor: "#10b981", desc: "Fluidez, suelo y exploración del movimiento." },
+    { name: "Salsa", accentColor: "#3e90ff", desc: "Sabor, giros y conexión en pareja al ritmo del Caribe." },
+    { name: "Bachata", accentColor: "#7c7cff", desc: "Sensualidad y musicalidad dominicana paso a paso." },
+    { name: "Cumbia", accentColor: "#47e266", desc: "El ritmo que une a toda Latinoamérica en la pista." },
+    { name: "Hip Hop", accentColor: "#aac7ff", desc: "Cultura urbana, groove y actitud." },
+    { name: "Jazz", accentColor: "#00b7ff", desc: "Técnica, líneas y expresión escénica." },
+    { name: "Contemporáneo", accentColor: "#8bd7ff", desc: "Fluidez, suelo y exploración del movimiento." },
   ];
   const styles = await db
     .insert(schema.styles)
@@ -201,7 +201,7 @@ async function main(): Promise<void> {
       slug: slugify("Social Salsa Noche de Estrellas"),
       title: "Social: Salsa Noche de Estrellas",
       description: "Noche social con DJ en vivo, clase express y mucho baile.",
-      location: "Salón Principal — Academia de Baile",
+      location: "Salón Principal — FDS Academy",
       startsAt: nextOccurrence(5, "21:00", 1),
       priceCents: 12000,
       capacity: 120,

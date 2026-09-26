@@ -22,12 +22,12 @@ export const metadata: Metadata = {
     template: `%s · ${APP_NAME}`,
   },
   description:
-    "Academia de baile en México: salsa, bachata, cumbia y más. Reserva clases, gestiona tu membresía y vive el ritmo.",
+    "PWA de FDS Academy para alumnos, tutores, instructores y administración: clases, pagos, eventos, avisos y perfil.",
   manifest: "/manifest.webmanifest",
   appleWebApp: { capable: true, title: APP_NAME, statusBarStyle: "black-translucent" },
   openGraph: {
     title: `${APP_NAME} — ${APP_TAGLINE}`,
-    description: "Reserva clases de baile, membresías y eventos.",
+    description: "Consulta clases, paga mensualidades, recibe avisos y gestiona eventos.",
     type: "website",
     locale: "es_MX",
   },
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#221a20" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -49,8 +49,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const tree = (
-    <html lang="es-MX" suppressHydrationWarning>
-      <body className={`${geist.variable} font-sans antialiased`}>
+    <html lang="es-MX" className={geist.variable} suppressHydrationWarning>
+      <body className="font-sans antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

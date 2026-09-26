@@ -73,7 +73,7 @@ export default async function LandingPage() {
           <Badge variant="secondary" className="gap-1.5">
             <Sparkles className="size-3.5" /> Inscripciones abiertas
           </Badge>
-          <h1 className="max-w-3xl font-display text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl">
+          <h1 className="max-w-3xl font-display text-4xl font-extrabold leading-[1.05] sm:text-6xl">
             {APP_TAGLINE}.
             <span className="block text-gradient">Baila con nosotros.</span>
           </h1>
@@ -123,7 +123,7 @@ export default async function LandingPage() {
                 <Card
                   className="group relative h-40 overflow-hidden border-0"
                   style={{
-                    background: `linear-gradient(135deg, ${style.accentColor ?? "#e11d48"}, color-mix(in oklch, ${style.accentColor ?? "#e11d48"} 40%, black))`,
+                    background: `linear-gradient(135deg, ${style.accentColor ?? "#3e90ff"}, color-mix(in oklch, ${style.accentColor ?? "#3e90ff"} 40%, black))`,
                   }}
                 >
                   <CardContent className="flex h-full flex-col justify-end p-5 text-white">

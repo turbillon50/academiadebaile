@@ -33,7 +33,7 @@ function StyleFields({ style }: { style?: Style }) {
             id="accentColor"
             name="accentColor"
             type="color"
-            defaultValue={style?.accentColor ?? "#e11d48"}
+            defaultValue={style?.accentColor ?? "#3e90ff"}
             className="h-10 p-1"
           />
         </div>
@@ -81,7 +81,7 @@ export default async function AdminEstilosPage() {
             <td className="px-4 py-3">
               <span
                 className="inline-block size-5 rounded-full border"
-                style={{ backgroundColor: s.accentColor ?? "#e11d48" }}
+                style={{ backgroundColor: s.accentColor ?? "#3e90ff" }}
               />
             </td>
             <td className="px-4 py-3">

@@ -6,14 +6,14 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: `${APP_NAME} — ${APP_TAGLINE}`,
     short_name: APP_NAME,
-    description: "Reserva clases de baile, membresías y eventos.",
+    description: "Clases, pagos, eventos, avisos y perfil para FDS Academy.",
     start_url: "/app",
     display: "standalone",
-    background_color: "#221a20",
-    theme_color: "#221a20",
+    background_color: "#000000",
+    theme_color: "#000000",
     lang: "es-MX",
     orientation: "portrait",
-    categories: ["lifestyle", "health", "education"],
+    categories: ["education", "health", "sports"],
     icons: [
       {
         src: "/icon.svg",

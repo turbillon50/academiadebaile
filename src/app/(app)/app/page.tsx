@@ -1,5 +1,14 @@
 import Link from "next/link";
-import { ArrowRight, CalendarCheck, CreditCard, Sparkles, Ticket } from "lucide-react";
+import {
+  ArrowRight,
+  Bell,
+  CalendarCheck,
+  CreditCard,
+  PartyPopper,
+  Sparkles,
+  Ticket,
+  Wallet,
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,33 +19,41 @@ import { StatCard } from "@/components/stat-card";
 import { requireUser } from "@/lib/auth";
 import {
   getActiveMembership,
+  getPublishedEvents,
   getUserBookings,
 } from "@/lib/queries";
+import { getStudentNotifications } from "@/services/notifications";
 import { BOOKING_STATUS_LABELS } from "@/lib/constants";
-import { formatCurrency, formatDate } from "@/lib/utils";
+import { formatCurrency, formatDate, formatTime } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 export default async function AlumnoDashboard() {
   const user = await requireUser();
-  const [bookings, membership] = await Promise.all([
+  const [bookings, membership, events] = await Promise.all([
     getUserBookings(user.id),
     getActiveMembership(user.id),
+    getPublishedEvents(),
   ]);
 
   const now = new Date();
+  const notifications = getStudentNotifications();
   const upcoming = bookings
     .filter((b) => b.status === "reservada" && b.session.startsAt > now)
     .sort((a, b) => a.session.startsAt.getTime() - b.session.startsAt.getTime());
   const attended = bookings.filter((b) => b.status === "asistio").length;
+  const nextClass = upcoming[0];
+  const nextPayment = membership?.expiresAt ?? new Date("2026-06-05T06:00:00Z");
 
   return (
     <div className="space-y-8">
       <div>
         <h1 className="font-display text-3xl font-extrabold">
-          ¡Hola, {user.firstName ?? "bailarín/a"}! 👋
+          Hola, {user.firstName ?? "bailarín/a"}
         </h1>
-        <p className="text-muted-foreground">Este es tu panel. Listo para bailar.</p>
+        <p className="text-muted-foreground">
+          Tu panel de entrenamiento, pagos y avisos de FDS Academy.
+        </p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
@@ -73,13 +90,104 @@ export default async function AlumnoDashboard() {
               </div>
             </div>
             <Button asChild>
-              <Link href="/app/membresia">
+              <Link href="/app/pagos">
                 Ver planes <ArrowRight className="size-4" />
               </Link>
             </Button>
           </CardContent>
         </Card>
       ) : null}
+
+      <section className="grid gap-4 lg:grid-cols-2">
+        <Card className="border-primary/25 bg-primary/5">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Wallet className="size-5 text-primary" /> Próximo pago
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex items-end justify-between gap-3">
+              <div>
+                <p className="text-sm text-muted-foreground">
+                  {membership ? "Mensualidad vigente" : "Mensualidad pendiente"}
+                </p>
+                <p className="font-display text-3xl font-extrabold">
+                  {membership
+                    ? formatCurrency(0)
+                    : formatCurrency(85000)}
+                </p>
+              </div>
+              <Badge variant={membership ? "success" : "warning"}>
+                {membership ? "Al corriente" : "Por pagar"}
+              </Badge>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Fecha objetivo: {formatDate(nextPayment)}.
+            </p>
+            <Button asChild size="sm" className="w-full">
+              <Link href="/app/pagos">Gestionar pago</Link>
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="border-l-4 border-l-primary">
+          <CardHeader>
+            <CardTitle>Próxima clase</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {nextClass ? (
+              <div className="space-y-3">
+                <div>
+                  <Badge variant="secondary">
+                    {nextClass.session.class.style.name}
+                  </Badge>
+                  <h2 className="mt-2 font-display text-2xl font-extrabold">
+                    {nextClass.session.class.name}
+                  </h2>
+                  <p className="text-sm text-muted-foreground">
+                    {formatDate(nextClass.session.startsAt)} ·{" "}
+                    {formatTime(nextClass.session.startsAt)} ·{" "}
+                    {nextClass.session.room?.name ?? "Salón por asignar"}
+                  </p>
+                </div>
+                <Button asChild size="sm" variant="outline" className="w-full">
+                  <Link href="/app/clases">Ver horario</Link>
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  No tienes clases próximas reservadas.
+                </p>
+                <Button asChild size="sm" className="w-full">
+                  <Link href="/app/clases">Reservar clase</Link>
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </section>
+
+      <section>
+        <h2 className="mb-4 font-display text-xl font-bold">Acciones rápidas</h2>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {[
+            { href: "/app/clases", label: "Horario", icon: CalendarCheck },
+            { href: "/app/pagos", label: "Pagar", icon: CreditCard },
+            { href: "/app/eventos", label: "Eventos", icon: PartyPopper },
+            { href: "/app/avisos", label: "Avisos", icon: Bell },
+          ].map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="rounded-xl border bg-card p-4 transition-transform hover:-translate-y-0.5"
+            >
+              <item.icon className="mb-3 size-6 text-primary" />
+              <p className="font-semibold">{item.label}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       <section>
         <div className="mb-4 flex items-center justify-between">
@@ -108,6 +216,73 @@ export default async function AlumnoDashboard() {
             ))}
           </div>
         )}
+      </section>
+
+      <section className="grid gap-4 lg:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Bell className="size-5 text-primary" /> Avisos recientes
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {notifications.slice(0, 3).map((notification) => (
+              <div
+                key={notification.id}
+                className="rounded-lg border border-border/70 bg-background/35 p-3"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <p className="font-medium">{notification.title}</p>
+                  {notification.unread ? (
+                    <Badge variant="default">Nuevo</Badge>
+                  ) : null}
+                </div>
+                <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+                  {notification.body}
+                </p>
+              </div>
+            ))}
+            <Button asChild variant="outline" size="sm" className="w-full">
+              <Link href="/app/avisos">Ver todos</Link>
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <PartyPopper className="size-5 text-primary" /> Eventos próximos
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {events.slice(0, 3).map((event) => (
+              <div
+                key={event.id}
+                className="rounded-lg border border-border/70 bg-background/35 p-3"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <p className="font-medium">{event.title}</p>
+                  <Badge variant="secondary">
+                    {event.priceCents === 0
+                      ? "Gratis"
+                      : formatCurrency(event.priceCents)}
+                  </Badge>
+                </div>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {formatDate(event.startsAt)} · {event.location ?? "FDS Academy"}
+                </p>
+              </div>
+            ))}
+            {events.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                Sin eventos publicados por ahora.
+              </p>
+            ) : null}
+            <Button asChild variant="outline" size="sm" className="w-full">
+              <Link href="/app/eventos">Ver eventos</Link>
+            </Button>
+          </CardContent>
+        </Card>
       </section>
 
       {bookings.length > 0 ? (
